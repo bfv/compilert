@@ -1,0 +1,12 @@
+config/
+node_modules/
+src/4gl/.settings/
+src/4gl-workspace/
+tmp/
+
+src/ts/**/*.js
+
+*.r
+*.lg
+*.log
+**/ubpf.config
