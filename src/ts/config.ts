@@ -9,7 +9,7 @@ export interface Config {
     maxport: number,
     workdir: string,
     targetdir: string,
-    startupParameters: Array<Object>
+    startupParameters: Array<string>
 }
 
 export function readConfig(configFilename: string): Config {
