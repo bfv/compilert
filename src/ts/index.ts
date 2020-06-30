@@ -1,6 +1,6 @@
 
 
-import { Config, readConfig } from './config';
+import { readConfig } from './config';
 import yargs from 'yargs';
 import { Thread } from './thread';
 
@@ -9,7 +9,7 @@ const argv = yargs.options({
     b: { type: 'string', choices: ['', '32'], default: '' }
 }).argv;
 
-let config = readConfig(argv.f);
+const config = readConfig(argv.f);
 
 // console.log('cli args:\n', JSON.stringify(argv, null, 4), '\n');
 // console.log('configuration:\n', JSON.stringify(config, null, 4));
@@ -35,7 +35,3 @@ sleep(1000).then(() => {
     t0.compile(files);
 });
 
-
-
-
-// console.log('end of file');
