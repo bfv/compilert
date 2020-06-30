@@ -5,9 +5,11 @@ import { Socket } from 'net';
 
 export class Thread {
 
-    private prowin: ChildProcessWithoutNullStreams | undefined;
-    private port: number = -1;
     state: 'starting' | 'ready' | 'busy' | 'error';
+
+    private prowin: ChildProcessWithoutNullStreams | undefined;
+    private port = -1;
+
 
     constructor(private threadNr: number, private config: Config) {
         this.state = 'starting';
@@ -29,13 +31,8 @@ export class Thread {
 
         params.push(paramString);
 
-        for (let param of this.config.startupParameters) {
-            for (let [key, value] of Object.entries(param)) {
-                params.push(key);
-                if (value) {
-                    params.push(value);
-                }
-            }
+        for (const param of this.config.startupParameters) {
+            params.push(param);
         }
 
         const executeThis = this.config.dlc + '/bin/' + this.config.executable;
@@ -49,9 +46,9 @@ export class Thread {
                 cwd: this.config.workdir
             });
 
-            this.prowin.stdout.on('data', (data) => {
-                // console.log(`stdout: ${data}`);
-            });
+            // this.prowin.stdout.on('data', (data) => {
+            //     // console.log(`stdout: ${data}`);
+            // });
 
             this.prowin.stdout.on('data', (data) => {
                 console.log(`stderr: ${data}`);
@@ -84,7 +81,7 @@ export class Thread {
 
     async sendMessage(contentType: string, message: string): Promise<void> {
 
-        const promise = new Promise<void>((resolve, reject) => {
+        const promise = new Promise<void>((resolve) => {
 
             const client = new Socket()
             client.connect(this.port, 'localhost', () => {
@@ -97,7 +94,14 @@ export class Thread {
         return promise;
     }
 
-    async kill() {
-        await this.sendMessage('plain/text', 'quit');
+    async kill(): Promise<void> {
+
+        const promise = new Promise<void>((resolve) => {
+            this.sendMessage('plain/text', 'quit').then(() => {
+                resolve();
+            });
+
+        });
+        return promise;
     }
 }
