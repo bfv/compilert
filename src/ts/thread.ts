@@ -16,7 +16,7 @@ export class Thread {
         this.init();
     }
 
-    init() {
+    init(): void {
 
         this.port = this.config.minport + this.threadNr;
 
@@ -61,22 +61,20 @@ export class Thread {
             this.state = 'ready';
 
         }
-        catch(err) {
+        catch (err) {
             this.state = 'error';
         }
-        
+
     }
 
-    async compile(files: Array<string>) {
-        
+    compile(files: Array<string>): void {
+
         this.state = 'busy';
 
-        await this.sendMessage('application/json', JSON.stringify({
+        this.sendMessage('application/json', JSON.stringify({
             command: 'compile',
             files: files
         }));
-
-        
     }
 
     async sendMessage(contentType: string, message: string): Promise<void> {
