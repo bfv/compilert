@@ -1,5 +1,6 @@
 config/
 node_modules/
+out/
 src/4gl/.settings/
 src/4gl-workspace/
 tmp/
