@@ -8,17 +8,13 @@ export class Thread {
     state: 'starting' | 'ready' | 'busy' | 'error';
 
     private prowin: ChildProcessWithoutNullStreams | undefined;
-    private port = -1;
 
-
-    constructor(private threadNr: number, private config: Config) {
+    constructor(private threadNr: number, private config: Config, private port: number) {
         this.state = 'starting';
         this.init();
     }
 
     init(): void {
-
-        this.port = this.config.minport + this.threadNr;
 
         const params = [
             '-p', './agent.p',
@@ -38,7 +34,6 @@ export class Thread {
         const executeThis = this.config.dlc + '/bin/' + this.config.executable;
 
         try {
-
 
             this.prowin = spawn(executeThis, params, {
                 detached: true,
