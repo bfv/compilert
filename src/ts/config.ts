@@ -8,7 +8,9 @@ export interface Config {
     minport: number,
     maxport: number,
     workdir: string,
+    srcroot: string,
     targetdir: string,
+    batchSize: number,
     startupParameters: Array<string>
 }
 
@@ -17,7 +19,7 @@ export function readConfig(configFilename: string): Config {
     let config: Config;
 
     try {
-        let data = fs.readFileSync(configFilename);
+        const data = fs.readFileSync(configFilename);
         config = <Config>JSON.parse(data.toString());
     }
     catch (error) {
