@@ -26,6 +26,7 @@
     "dependencies": {
         "@types/node": "^14.0.6",
         "@types/yargs": "^15.0.5",
+        "get-port": "^5.1.1",
         "typescript": "^3.9.5",
         "yargs": "^15.3.1"
     },
