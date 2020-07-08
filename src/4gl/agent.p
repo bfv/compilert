@@ -6,16 +6,21 @@ using Progress.Json.ObjectModel.ObjectModelParser from propath.
 using Progress.Json.ObjectModel.JsonArray from propath.
 using Progress.Lang.AppError from propath.
 
+function setupClientSocket returns logical() forward.
+function createHttpMessage returns longchar (body as JsonObject) forward.
+
 define variable listener as handle no-undo.
 define variable params as character no-undo.
 define variable thread# as integer no-undo.
 define variable basedir as character no-undo.
 define variable port as integer no-undo.
+define variable serverport as integer no-undo.
 define variable currentMessage as longchar no-undo.
 define variable currentMessageNumber as integer no-undo.
 define variable compileDestination as character no-undo.
 
 define variable currentContentType as character no-undo.
+define variable httpClient as handle no-undo.
 
 do on error undo, throw:
     
@@ -126,6 +131,8 @@ procedure processParameters private:
                 basedir = paramValue.
             when 'port' then
                 port = integer(paramValue).
+            when 'serverport' then
+                serverport = integer(paramValue).
         end case.
     end.
     
@@ -142,7 +149,7 @@ procedure initialize private:
     // message compileDestination file-info:file-type view-as alert-box.
     if (file-info:file-type = ?) then
         os-create-dir value(compileDestination).
-        
+    
 end procedure.
 
 procedure processMessage private:
@@ -180,6 +187,8 @@ procedure processCompileCommand private:
         run compileFile(fileToCompile).       
     end.
     
+    run sendMessageToServer.
+    
 end procedure.
 
 procedure compileFile private:
@@ -189,3 +198,71 @@ procedure compileFile private:
     compile value(fileToCompile) save into value(compileDestination).
     
 end procedure.
+
+
+function setupClientSocket returns logical():
+    
+    define variable resultOK as logical no-undo.
+    
+    create socket httpClient.
+    resultOK = httpClient:connect(substitute('-H localhost -S &1', serverport)).
+    
+    return resultOK.
+    
+end function.
+
+function closeClientSocket returns logical ():
+    httpClient:disconnect().    
+end function.
+
+procedure sendMessageToServer private:
+    
+    define variable json as JsonObject no-undo.
+    define variable messageText as longchar no-undo.
+    define variable messageBytes as memptr no-undo.
+    define variable messageSizeInBytes as integer no-undo.
+    
+    setupClientSocket().
+    
+    json = new JsonObject().
+    json:Add('thread', thread#).
+    json:Add('status', 'ok').
+    
+    messageText = createHttpMessage(json).
+    messageSizeInBytes = length(messageText, 'raw') + 1.
+    set-size(messageBytes) = messageSizeInBytes.
+    put-string(messageBytes, 1) = messageText.
+
+    httpClient:write(messageBytes, 1, messageSizeInBytes - 1).
+    
+    closeClientSocket().
+    
+    finally:
+        set-size(messageBytes) = 0.
+    end.
+    
+end procedure.
+
+
+function createHttpMessage returns longchar (body as JsonObject):
+    
+    define variable separator as character initial '~r~n' no-undo.
+    define variable messageText as longchar no-undo.
+    define variable bodyText as longchar no-undo.
+    
+    messageText = 'POST / HTTP/1.1' + separator.
+    messageText = messageText + 'Host: localhost:' + string(serverport) + separator.
+    messageText = messageText + 'Accept: */*' + separator.
+    messageText = messageText + 'Content-Type: application/json' + separator.
+    
+    body:Write(bodyText, true).    
+    messageText = messageText + substitute('Content-Length: &1', length(bodyText, 'raw')).
+    
+    // end headers
+    messageText = messageText + separator + separator.
+    
+    messageText = messageText + bodyText.
+
+    return messageText.
+    
+end function.
