@@ -1,15 +1,29 @@
-import { Config } from './config';
-import { Thread } from './thread';
 import getPort from 'get-port';
-import { Listener } from './listener';
 import fs from 'fs';
 import path from 'path';
 
-export class ServerProcess {
+import { Config } from './config';
+import { Thread } from './thread';
+import { Listener } from './listener';
+
+export interface Response4GL {
+    process4GLresponse(response: { thread: number, status: string }): void;
+}
+
+export interface CompileResponse {
+    thread: number,
+    status: 'ok' | 'error',
+    errornousFiles?: ({ file: string, error: string })[]
+}
+
+export class ServerProcess implements Response4GL {
 
     private threads: Thread[] = [];
     private serverPort = -1;
     private listener!: Listener;
+
+    private remainingFiles: string[] = [];
+    private activeThreads = 0;
 
     constructor(private config: Config) {
         // this.init();
@@ -23,22 +37,38 @@ export class ServerProcess {
         });
 
         this.serverPort = await this.getFreePort(this.config.minport, this.config.maxport);
-        this.listener = new Listener(this.config, this.serverPort, this);
+
+        await this.setupListener();
         await this.setupThreads();
 
         return promise;
     }
 
+
+    private async setupListener(): Promise<void> {
+        const promise = new Promise<void>((resolve) => {
+            this.listener = new Listener(this.config, this.serverPort, this);
+            this.listener.init();
+            resolve();
+        });
+        return promise;
+    }
+
     private async setupThreads(): Promise<void> {
-        console.log('threads:', this.config.threads);
+
         const promise = new Promise<void>(resolve => {
             let port = this.serverPort + 1;
             for (let threadNo = 0; threadNo < this.config.threads; threadNo++) {
-                console.log('start thread:', threadNo);
+                
                 this.getFreePort(port, this.config.maxport).then((portIn) => {
                     port = portIn;
-                    const thread = new Thread(threadNo, this.config, port);
+                    const thread = new Thread(threadNo, this.config, port, this.serverPort);
+                    thread.init();
                     this.threads.push(thread);
+                    this.activeThreads++;
+                    console.log('start thread:', threadNo, 'at port', portIn);
+                }, (err) => {
+                    console.log('thread init, error getting port', err);
                 });
             }
             resolve();
@@ -57,9 +87,30 @@ export class ServerProcess {
         // distribute over threads
         // run compilation in batches in threads
 
-        const allFiles = this.getFiles(this.config.srcroot);
+        this.remainingFiles = this.getFiles(this.config.srcroot);
 
-        this.threads[0].compile(allFiles);
+        // this.threads[0].compile(allFiles);
+        for (let i = 0; i < this.config.threads; i++) {
+            this.compileBatch(i);
+        }
+    }
+
+    compileBatch(threadNo: number): boolean {
+
+        const filesToCompiles: string[] = [];
+        
+        for (let i = 0; i < this.config.batchSize; i++) {
+            const file = this.remainingFiles.shift();
+            if (file) {
+                filesToCompiles.push(file);
+            }
+        }
+
+        // console.log('thread:', threadNo, 'compile batch:', JSON.stringify(filesToCompiles));
+
+        this.threads[threadNo].compile(filesToCompiles);
+
+        return (this.remainingFiles.length > 0);
     }
 
     getFiles(directory: string): string[] {
@@ -70,23 +121,23 @@ export class ServerProcess {
         return files;
     }
 
-    private readdirSync (directory: string, filetypes: string[]): Array<string> {
-    
+    private readdirSync(directory: string, filetypes: string[]): Array<string> {
+
         let files: Array<string> = [];
-    
+
         const entries = fs.readdirSync(directory, { withFileTypes: true });
-      
+
         for (let i = 0; i < entries.length; i++) {
             const currentEntry = entries[i];
-    
-            if (currentEntry.isDirectory()) {           
-                files = [ ...files, ...this.readdirSync( path.join(directory,  currentEntry.name), filetypes)];
+
+            if (currentEntry.isDirectory()) {
+                files = [...files, ...this.readdirSync(path.join(directory, currentEntry.name), filetypes)];
             }
             else if (currentEntry.isFile() && this.hasExtension(currentEntry.name, filetypes)) {
-                files.push(path.join(directory,  currentEntry.name));
+                files.push(path.join(directory, currentEntry.name));
             }
         }
-    
+
         return files;
     }
 
@@ -108,5 +159,21 @@ export class ServerProcess {
         }
 
         return normalizedFiles;
+    }
+
+    process4GLresponse(response: { thread: number, status: string }): void {
+
+        if (this.remainingFiles.length > 0) {
+            this.compileBatch(response.thread);
+        }
+        else {
+            this.threads[response.thread].kill().then(() => {
+                this.activeThreads--;
+                if (this.activeThreads == 0) {
+                    console.log('all threads closed');
+                    process.exit(0);
+                }
+            });
+        }
     }
 }

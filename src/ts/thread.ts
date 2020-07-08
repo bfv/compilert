@@ -9,9 +9,8 @@ export class Thread {
 
     private prowin: ChildProcessWithoutNullStreams | undefined;
 
-    constructor(private threadNr: number, private config: Config, private port: number) {
+    constructor(private threadNr: number, private config: Config, private port: number, private listenerport: number) {
         this.state = 'starting';
-        this.init();
     }
 
     init(): void {
@@ -24,6 +23,7 @@ export class Thread {
         let paramString = 't=' + this.threadNr.toString();
         paramString += ',basedir=' + this.config.targetdir;
         paramString += ',port=' + this.port;
+        paramString += ',serverport=' + this.listenerport;
 
         params.push(paramString);
 
