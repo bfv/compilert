@@ -10,7 +10,7 @@ const argv = yargs.options({
     b: { type: 'string', choices: ['', '32'], default: '' }
 }).argv;
 
-const sleep = (waitTimeInMs: number) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
+export const sleep = (waitTimeInMs: number): Promise<void> => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 async function main() {
 
@@ -19,7 +19,7 @@ async function main() {
     const server = new ServerProcess(config);
     await server.init();
 
-    await sleep(1000);
+    await sleep(100);  //  give processes chance to start
     server.start();
 }
 
