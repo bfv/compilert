@@ -11,6 +11,9 @@ src/ts/**/*.js
 *.lg
 *.log
 **/ubpf.config
+src/4gl/lbi*
+src/4gl/rcd*
+src/4gl/srt*
 
 src/4gl/.project
 src/4gl/.propath
