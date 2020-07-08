@@ -9,11 +9,11 @@
     Notes       : 
   ----------------------------------------------------------------------*/
 
-using Progress.Lang.*.
+using test.BaseClass from propath.
 
 block-level on error undo, throw.
 
-class test.TestClass3: 
+class test.TestClass3 inherits BaseClass: 
 
     /*------------------------------------------------------------------------------
      Purpose:
