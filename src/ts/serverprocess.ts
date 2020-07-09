@@ -8,9 +8,16 @@ import { Config } from './config';
 import { Thread } from './thread';
 import { Listener } from './listener';
 
-export interface Response4GL {
-    process4GLresponse(response: { thread: number, status: string }): void;
+export interface Response4GLMessage {
+    thread: number,
+    status: string,
+    errors?: [{ file: string, error: string }]
 }
+
+export interface Response4GL {
+    process4GLresponse(response: Response4GLMessage): void;
+}
+
 
 export interface CompileResponse {
     thread: number,
@@ -56,7 +63,6 @@ export class ServerProcess implements Response4GL {
         return promise;
     }
 
-
     private async setupListener(): Promise<void> {
         const promise = new Promise<void>((resolve) => {
             this.listener = new Listener(this.config, this.serverPort, this);
@@ -71,16 +77,18 @@ export class ServerProcess implements Response4GL {
         const promise = new Promise<void>(resolve => {
             let port = this.serverPort + 1;
             for (let threadNo = 0; threadNo < this.config.threads; threadNo++) {
-                
+
                 this.getFreePort(port, this.config.maxport).then((portIn) => {
                     port = portIn;
                     const thread = new Thread(threadNo, this.config, port, this.serverPort);
                     thread.init();
                     this.threads.push(thread);
                     this.activeThreads++;
-                    console.log('start thread:', threadNo, 'at port', portIn);
+                    if (this.config.verbose) {
+                        console.log('start thread:', threadNo, 'at port', portIn);
+                    }
                 }, (err) => {
-                    console.log('thread init, error getting port', err);
+                    console.error('thread init, error getting port', err);
                 });
             }
             resolve();
@@ -106,15 +114,13 @@ export class ServerProcess implements Response4GL {
     compileBatch(threadNo: number): boolean {
 
         const filesToCompiles: string[] = [];
-        
+
         for (let i = 0; i < this.config.batchSize; i++) {
             const file = this.remainingFiles.shift();
             if (file) {
                 filesToCompiles.push(file);
             }
         }
-
-        // console.log('thread:', threadNo, 'compile batch:', JSON.stringify(filesToCompiles));
 
         this.threads[threadNo].compile(filesToCompiles);
 
@@ -169,7 +175,13 @@ export class ServerProcess implements Response4GL {
         return normalizedFiles;
     }
 
-    process4GLresponse(response: { thread: number, status: string }): void {
+    process4GLresponse(response: Response4GLMessage): void {
+
+        if (response.errors) {
+            for (let i = 0; i < response.errors.length; i++) {
+                console.error('ERROR:', response.errors[i].file, ':', response.errors[i].error);
+            }
+        }
 
         if (this.remainingFiles.length > 0) {
             this.compileBatch(response.thread);
@@ -178,7 +190,9 @@ export class ServerProcess implements Response4GL {
             this.threads[response.thread].kill().then(() => {
                 this.activeThreads--;
                 if (this.activeThreads == 0) {
-                    console.log('all threads closed');
+                    if (this.config.verbose) { 
+                        console.log('all threads closed'); 
+                    }
                     this.consolidate();
                     process.exit(0);
                 }

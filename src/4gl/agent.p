@@ -21,6 +21,7 @@ define variable compileDestination as character no-undo.
 
 define variable currentContentType as character no-undo.
 define variable httpClient as handle no-undo.
+define variable currentCompileErrors as JsonArray no-undo.
 
 do on error undo, throw:
     
@@ -183,6 +184,8 @@ procedure processCompileCommand private:
     define variable fileToCompile as character no-undo.
     define variable i as integer no-undo.
     
+    currentCompileErrors = new JsonArray().
+    
     fileArray = json:GetJsonArray('files').
     do i = 1 to fileArray:Length:
         fileToCompile = fileArray:GetCharacter(i). 
@@ -197,11 +200,17 @@ procedure compileFile private:
     
     define input parameter fileToCompile as character no-undo.
     
+    define variable errorJson as JsonObject no-undo.
+    
     do on error undo, throw:
         compile value(fileToCompile) save into value(compileDestination).
         
         catch err1 as Progress.Lang.Error :
             // nothing for now
+            errorJson = new JsonObject().
+            errorJson:Add('file', fileToCompile).
+            errorJson:Add('error', err1:GetMessage(1)).
+            currentCompileErrors:Add(errorJson).
         end catch.
     end.
     
@@ -234,8 +243,14 @@ procedure sendMessageToServer private:
     
     json = new JsonObject().
     json:Add('thread', thread#).
-    json:Add('status', 'ok').
     
+    if (currentCompileErrors:Length = 0) then
+        json:Add('status', 'ok').
+    else do:
+        json:Add('status', 'error').
+        json:Add('errors', currentCompileErrors).
+    end.
+        
     messageText = createHttpMessage(json).
     messageSizeInBytes = length(messageText, 'raw') + 1.
     set-size(messageBytes) = messageSizeInBytes.

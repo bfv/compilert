@@ -3,14 +3,18 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import { Config } from "./config";
-import { Response4GL } from './serverprocess';
+import { Response4GL, Response4GLMessage } from './serverprocess';
 
 export class Listener {
 
     app: express.Express;
 
     constructor(private config: Config, private port: number, private server: Response4GL) {
-        console.log('starting listener');
+
+        if (this.config.verbose) {
+            console.log('starting listener');
+        }
+
         this.app = express();
     }
 
@@ -19,7 +23,7 @@ export class Listener {
         this.app.use(bodyParser.json());
 
         this.app.post('/', (req, res) => {
-            const body = <{ thread: number, status: string }>req.body;
+            const body = <Response4GLMessage>req.body;
             this.server.process4GLresponse(body);
 
             res.setHeader('Content-Type', 'text/plain');
@@ -29,7 +33,9 @@ export class Listener {
         });
 
         this.app.listen(this.port, () => {
-            console.log(`server started at http://localhost:${this.port}`);
+            if (this.config.verbose) {
+                console.log(`server started at http://localhost:${this.port}`);
+            }
         });
     }
 }

@@ -12,6 +12,7 @@ export interface Config {
     targetdir: string,
     batchSize: number,
     deleteRcode: boolean,
+    verbose: boolean,
     startupParameters: Array<string>
 }
 
@@ -24,7 +25,7 @@ export function readConfig(configFilename: string): Config {
         config = <Config>JSON.parse(data.toString());
     }
     catch (error) {
-        console.log(error);
+        console.error(error);
         process.exit(1);
     }
 

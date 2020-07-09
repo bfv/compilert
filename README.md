@@ -1,5 +1,5 @@
 # compilert (WIP)
-Multi threaded compiler for OpenEdge with an nodejs engine. 
+Multi threaded compiler for OpenEdge with an nodejs engine. Minimum node version is 12.10.0.
 
 The working idea is to be able to use more than 1 core for compiling you OE project based on a configuration like this:
 ```
@@ -10,7 +10,11 @@ The working idea is to be able to use more than 1 core for compiling you OE proj
     "minport": 3055,
     "maxport": 3075,
     "workdir": "C:/dev/oe/compilert/src/4gl",
-    "targetdir": "c:/tmp/compilert/tmp/rcode",
+    "srcroot": "c:/dev/oe/compilert/src/4gl",
+    "targetdir": "c:/dev/oe/compilert/tmp",
+    "batchSize": 4,
+    "deleteRcode": false,
+    "verbose": false,
     "startupParameters": [
         "-basekey", "INI",
         "-ininame", "c:/dev/oe/compilert/config/progress.ini",
