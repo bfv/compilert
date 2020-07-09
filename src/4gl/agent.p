@@ -146,9 +146,11 @@ procedure initialize private:
     
     compileDestination = basedir + '/t' + string(thread#).    
     file-info:file-name = compileDestination.
-    // message compileDestination file-info:file-type view-as alert-box.
+    
     if (file-info:file-type = ?) then
         os-create-dir value(compileDestination).
+    
+    compiler:multi-compile = true.
     
 end procedure.
 
