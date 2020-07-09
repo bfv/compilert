@@ -197,7 +197,13 @@ procedure compileFile private:
     
     define input parameter fileToCompile as character no-undo.
     
-    compile value(fileToCompile) save into value(compileDestination).
+    do on error undo, throw:
+        compile value(fileToCompile) save into value(compileDestination).
+        
+        catch err1 as Progress.Lang.Error :
+            // nothing for now
+        end catch.
+    end.
     
 end procedure.
 
