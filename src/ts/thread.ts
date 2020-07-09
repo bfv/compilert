@@ -13,9 +13,11 @@ export class Thread {
 
     private prowin: ChildProcessWithoutNullStreams | undefined;
     private directories: string[] = [];
+    private oecTargetDirectory: string;
 
     constructor(private threadNr: number, private config: Config, private port: number, private listenerport: number) {
         this.state = 'starting';
+        this.oecTargetDirectory = path.join(this.config.targetdir, '.oec');
     }
 
     init(): void {
@@ -26,7 +28,7 @@ export class Thread {
         ];
 
         let paramString = 't=' + this.threadNr.toString();
-        paramString += ',basedir=' + this.config.targetdir;
+        paramString += ',basedir=' + this.oecTargetDirectory;
         paramString += ',port=' + this.port;
         paramString += ',serverport=' + this.listenerport;
 
@@ -94,7 +96,7 @@ export class Thread {
     }
 
     private createDirectory(directory: string): void {
-        const fullDirectory = path.join(this.config.targetdir, 't' + this.threadNr, directory);
+        const fullDirectory = path.join(this.oecTargetDirectory, 't' + this.threadNr, directory);
         // in theory it is possible that a/b is not in this.directories but a/b/c is, so a/b is already created
         if (!fs.existsSync(fullDirectory)) {
             makeDir.sync(fullDirectory);

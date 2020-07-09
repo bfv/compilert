@@ -36,6 +36,12 @@ export class ServerProcess implements Response4GL {
             resolve();
         });
 
+        const targetDir = path.join(this.config.targetdir, '.oec');
+        if (fs.existsSync(targetDir)) {
+            fs.rmdirSync(targetDir, { recursive: true });
+        }
+        fs.mkdirSync(targetDir);
+        
         this.serverPort = await this.getFreePort(this.config.minport, this.config.maxport);
 
         await this.setupListener();
