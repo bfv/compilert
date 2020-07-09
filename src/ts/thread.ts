@@ -48,16 +48,8 @@ export class Thread {
                 cwd: this.config.workdir
             });
 
-            // this.prowin.stdout.on('data', (data) => {
-            //     // console.log(`stdout: ${data}`);
-            // });
-
             this.prowin.stdout.on('data', (data) => {
                 console.log(`stderr: ${data}`);
-            });
-
-            this.prowin.on('close', (code) => {
-                console.log(`child process exited with code ${code}`);
             });
 
             this.state = 'ready';
