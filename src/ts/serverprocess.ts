@@ -1,5 +1,6 @@
 import getPort from 'get-port';
 import fs from 'fs';
+import fse from 'fs-extra';
 import path from 'path';
 
 import { Config } from './config';
@@ -41,7 +42,7 @@ export class ServerProcess implements Response4GL {
             fs.rmdirSync(targetDir, { recursive: true });
         }
         fs.mkdirSync(targetDir);
-        
+
         this.serverPort = await this.getFreePort(this.config.minport, this.config.maxport);
 
         await this.setupListener();
@@ -177,9 +178,16 @@ export class ServerProcess implements Response4GL {
                 this.activeThreads--;
                 if (this.activeThreads == 0) {
                     console.log('all threads closed');
+                    this.consolidate();
                     process.exit(0);
                 }
             });
+        }
+    }
+
+    private consolidate() {
+        for (let i = 0; i < this.config.threads; i++) {
+            fse.copySync(path.join(this.config.targetdir, '.oec', 't' + i.toString()), this.config.targetdir);
         }
     }
 }
