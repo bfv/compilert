@@ -11,6 +11,7 @@ export interface Config {
     srcroot: string,
     targetdir: string,
     batchSize: number,
+    deleteRcode: boolean,
     startupParameters: Array<string>
 }
 

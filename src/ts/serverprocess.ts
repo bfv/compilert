@@ -1,3 +1,4 @@
+import del from 'del';
 import getPort from 'get-port';
 import fs from 'fs';
 import fse from 'fs-extra';
@@ -42,6 +43,10 @@ export class ServerProcess implements Response4GL {
             fs.rmdirSync(targetDir, { recursive: true });
         }
         fs.mkdirSync(targetDir);
+
+        if (this.config.deleteRcode) {
+            await del(this.config.targetdir + '/**/*.r');
+        }
 
         this.serverPort = await this.getFreePort(this.config.minport, this.config.maxport);
 
@@ -90,13 +95,9 @@ export class ServerProcess implements Response4GL {
     }
 
     start(): void {
-        // get files
-        // distribute over threads
-        // run compilation in batches in threads
 
         this.remainingFiles = this.getFiles(this.config.srcroot);
 
-        // this.threads[0].compile(allFiles);
         for (let i = 0; i < this.config.threads; i++) {
             this.compileBatch(i);
         }

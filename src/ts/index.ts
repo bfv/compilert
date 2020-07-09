@@ -7,7 +7,7 @@ import { ServerProcess } from './serverprocess';
 
 const argv = yargs.options({
     f: { type: 'string', default: './config.json', alias: 'file', description: 'Configuaration path' },
-    b: { type: 'string', choices: ['', '32'], default: '' }
+    d: { type: 'boolean', default: false }
 }).argv;
 
 export const sleep = (waitTimeInMs: number): Promise<void> => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
@@ -15,6 +15,9 @@ export const sleep = (waitTimeInMs: number): Promise<void> => new Promise(resolv
 async function main() {
 
     const config = readConfig(argv.f);
+    if (argv.d === true) {
+        config.deleteRcode = true;  // provide cli override with -d
+    }
 
     const server = new ServerProcess(config);
     await server.init();
