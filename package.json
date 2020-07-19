@@ -4,7 +4,7 @@
     "description": "Multi-threaded compiler for OpenEdge",
     "main": "src/ts/index.js",
     "bin": {
-        "oec": "./index.js"
+        "oec": "./lib/index.js"
     },
     "scripts": {
         "build": "tsc",
