@@ -1,4 +1,5 @@
 config/
+lib/
 node_modules/
 out/
 src/4gl/.settings/
