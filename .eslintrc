@@ -10,6 +10,9 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
+        "brace-style": [2, "stroustrup", { "allowSingleLine": false }],
+        "eol-last": ["error", "always"],
+        "indent": ["error", 4],
         "no-console": 0
     }
 }
