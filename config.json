@@ -1,0 +1,17 @@
+{
+    "dlc": "c:/dlc/122",
+    "executable": "prowin.exe",
+    "threads": 2,
+    "minport": 3055,
+    "maxport": 3075,
+    "workdir": "c:/dev/oe/compilert/src/4gl",
+    "srcroot": "c:/dev/oe/compilert/src/4gl",
+    "targetdir": "c:/tmp/compilert/tmp/rcode",
+    "batchSize": 2,
+    "startupParameters": [
+        "-basekey", "INI",
+        "-ininame", "c:/dev/oe/compilert/config/progress.ini",
+        "-b"
+    ]
+
+}

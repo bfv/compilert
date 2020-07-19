@@ -3,8 +3,11 @@
     "version": "0.0.1",
     "description": "Multi-threaded compiler for OpenEdge",
     "main": "src/ts/index.js",
+    "bin": {
+        "oec": "./index.js"
+    },
     "scripts": {
-        "run": "",
+        "build": "tsc",
         "lint": "eslint . --ext .ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -17,7 +20,7 @@
         "compiler",
         "mt"
     ],
-    "author": "bfv",
+    "author": "bfv <dev@bfv.io>",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/bfv/compilert/issues"
