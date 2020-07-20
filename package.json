@@ -9,7 +9,10 @@
     "scripts": {
         "build": "tsc && cp ./src/4gl/agent.p ./lib",
         "lint": "eslint . --ext .ts",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "preversion": "npm run lint",
+        "version": "npm run build",
+        "postversion": "git push && git push --tags"
     },
     "repository": {
         "type": "git",
