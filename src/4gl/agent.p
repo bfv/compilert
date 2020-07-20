@@ -152,6 +152,8 @@ procedure initialize private:
         os-create-dir value(compileDestination).
     
     compiler:multi-compile = true.
+
+    session:suppress-warnings = true.
     
 end procedure.
 
