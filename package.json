@@ -7,7 +7,7 @@
         "oec": "./lib/index.js"
     },
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && cp ./src/4gl/agent.p ./lib",
         "lint": "eslint . --ext .ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
