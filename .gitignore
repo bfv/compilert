@@ -11,6 +11,7 @@ src/ts/**/*.js
 *.r
 *.lg
 *.log
+*.tgz
 **/ubpf.config
 src/4gl/lbi*
 src/4gl/rcd*
