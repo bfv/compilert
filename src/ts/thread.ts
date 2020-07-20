@@ -23,7 +23,7 @@ export class Thread {
     init(): void {
 
         const params = [
-            '-p', './agent.p',
+            '-p', path.join(__dirname, 'agent.p'),
             '-param'
         ];
 
