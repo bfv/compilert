@@ -6,8 +6,8 @@ import { readConfig } from './config';
 import { ServerProcess } from './serverprocess';
 
 const argv = yargs.options({
-    f: { type: 'string', default: './.oecconfig', alias: 'file', description: 'Configuaration path' },
-    d: { type: 'boolean', default: false },
+    f: { type: 'string', default: './.oecconfig', alias: 'file', description: 'Configuration path' },
+    d: { type: 'boolean', default: false, alias: 'delete', description: 'delete rcode before compiling' },
     v: { type: 'boolean', default: false, alias: 'verbose'}
 }).argv;
 
