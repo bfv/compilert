@@ -22,4 +22,4 @@ The working idea is to be able to use more than 1 core for compiling you OE proj
     ]
 }
 ```
-Compiling would look like `oec -f ./.oecconfig`. At runtime several subdirs (t0, t1, t2, t3 in this example) are created in `.oec` to store the .r's for the particular thread. When all threads are finished all the subdirs are joined to the target dir. This way collisions when a lot classes inherit the same base class (f.e. BusinessEntity) are avoided.    
+Compiling would look like `oec -f ./.oecconfig`. At runtime several subdirs (t0, t1, t2, t3 in this example) are created in `${targetdir}/.oec` to store the .r's for the particular thread. When all threads are finished all the subdirs are copied/joined to the `targetdir`. This way collisions when a lot classes inherit the same base class (f.e. BusinessEntity) are avoided.

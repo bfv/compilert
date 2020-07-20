@@ -6,12 +6,11 @@
     "maxport": 3075,
     "workdir": "c:/dev/oe/compilert/src/4gl",
     "srcroot": "c:/dev/oe/compilert/src/4gl",
-    "targetdir": "c:/tmp/compilert/tmp/rcode",
+    "targetdir": "C:/dev/oe/compilert/tmp",
     "batchSize": 2,
     "startupParameters": [
         "-basekey", "INI",
         "-ininame", "c:/dev/oe/compilert/config/progress.ini",
         "-b"
     ]
-
 }
