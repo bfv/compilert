@@ -1,4 +1,10 @@
 .vscode/
+config/
 node_modules/
 src/
-config/
+
+./editorconfig
+./eslintrc
+./oecconfig
+./4gl-coding-standards.md
+./tsconfig.json
