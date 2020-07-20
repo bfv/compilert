@@ -1,6 +1,6 @@
 {
     "name": "compilert",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Multi-threaded compiler for OpenEdge",
     "main": "src/ts/index.js",
     "bin": {
