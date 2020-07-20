@@ -5,7 +5,7 @@ import * as makeDir from 'make-dir';
 import path from 'path';
 import fs from 'fs';
 
-import { Config } from "./config";
+import { OecConfig } from "./config";
 
 export class Thread {
 
@@ -15,7 +15,7 @@ export class Thread {
     private directories: string[] = [];
     private oecTargetDirectory: string;
 
-    constructor(private threadNr: number, private config: Config, private port: number, private listenerport: number) {
+    constructor(private threadNr: number, private config: OecConfig, private port: number, private listenerport: number) {
         this.state = 'starting';
         this.oecTargetDirectory = path.join(this.config.targetdir, '.oec');
     }

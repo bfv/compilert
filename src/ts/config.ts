@@ -1,7 +1,7 @@
 
 import fs from 'fs';
 
-export interface Config {
+export interface OecConfig {
     dlc: string;
     executable: string,
     threads: number,
@@ -16,13 +16,13 @@ export interface Config {
     startupParameters: Array<string>
 }
 
-export function readConfig(configFilename: string): Config {
+export function readConfig(configFilename: string): OecConfig {
 
-    let config: Config;
+    let config: OecConfig;
 
     try {
         const data = fs.readFileSync(configFilename);
-        config = <Config>JSON.parse(data.toString());
+        config = <OecConfig>JSON.parse(data.toString());
     }
     catch (error) {
         console.error(error);

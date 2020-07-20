@@ -6,7 +6,7 @@ import { readConfig } from './config';
 import { ServerProcess } from './serverprocess';
 
 const argv = yargs.options({
-    f: { type: 'string', default: './config.json', alias: 'file', description: 'Configuaration path' },
+    f: { type: 'string', default: './.oecconfig', alias: 'file', description: 'Configuaration path' },
     d: { type: 'boolean', default: false },
     v: { type: 'boolean', default: false, alias: 'verbose'}
 }).argv;

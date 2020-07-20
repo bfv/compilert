@@ -4,7 +4,7 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
 
-import { Config } from './config';
+import { OecConfig } from './config';
 import { Thread } from './thread';
 import { Listener } from './listener';
 
@@ -34,7 +34,7 @@ export class ServerProcess implements Response4GL {
     private remainingFiles: string[] = [];
     private activeThreads = 0;
 
-    constructor(private config: Config) {
+    constructor(private config: OecConfig) {
         // this.init();
     }
 
