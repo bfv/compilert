@@ -10,6 +10,7 @@ import { Listener } from './listener';
 
 export interface Response4GLMessage {
     thread: number,
+    filecount: number,
     status: string,
     errors?: [{ file: string, error: string }]
 }
@@ -32,6 +33,9 @@ export class ServerProcess implements Response4GL {
     private listener!: Listener;
 
     private remainingFiles: string[] = [];
+    private fileCount = 0;
+    private compiledFiles = 0;
+    private errorCount = 0;
     private activeThreads = 0;
 
     constructor(private config: OecConfig) {
@@ -49,7 +53,7 @@ export class ServerProcess implements Response4GL {
         if (fs.existsSync(targetDir)) {
             fs.rmdirSync(targetDir, { recursive: true });
         }
-        fs.mkdirSync(targetDir);
+        fse.mkdirSync(targetDir, { recursive: true });
 
         if (this.config.deleteRcode) {
             await del(this.config.targetdir + '/**/*.r');
@@ -105,6 +109,7 @@ export class ServerProcess implements Response4GL {
     start(): void {
 
         this.remainingFiles = this.getFiles(this.config.srcroot);
+        this.fileCount = this.remainingFiles.length;
 
         for (let i = 0; i < this.config.threads; i++) {
             this.compileBatch(i);
@@ -181,8 +186,18 @@ export class ServerProcess implements Response4GL {
             for (let i = 0; i < response.errors.length; i++) {
                 console.error('ERROR:', response.errors[i].file, ':', response.errors[i].error);
             }
+            this.errorCount += response.errors.length;
         }
 
+        if (this.compiledFiles > 0) {
+            process.stdout.clearLine(0);
+            process.stdout.cursorTo(0);       
+        }
+
+        this.compiledFiles += response.filecount;
+
+        process.stdout.write(`compiled ${this.compiledFiles}/${this.fileCount}, errors: ${this.errorCount}`);
+        
         if (this.remainingFiles.length > 0) {
             this.compileBatch(response.thread);
         }

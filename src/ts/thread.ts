@@ -91,7 +91,7 @@ export class Thread {
         const fullDirectory = path.join(this.oecTargetDirectory, 't' + this.threadNr, directory);
         // in theory it is possible that a/b is not in this.directories but a/b/c is, so a/b is already created
         if (!fs.existsSync(fullDirectory)) {
-            fse.mkdirSync(fullDirectory);
+            fse.mkdirSync(fullDirectory, { recursive: true });
         }
     }
 
