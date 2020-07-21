@@ -1,5 +1,9 @@
 # `release notes`
 
+`1.1.0`
+- #11 added optional counter (-c) 
+- fixed recursive mkdir bug
+
 `1.0.4`
 - updated docs
 - removed `make-dir` package
