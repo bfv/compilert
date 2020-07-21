@@ -194,7 +194,7 @@ procedure processCompileCommand private:
         run compileFile(fileToCompile).       
     end.
     
-    run sendMessageToServer.
+    run sendMessageToServer(fileArray:Length).
     
 end procedure.
 
@@ -236,6 +236,8 @@ end function.
 
 procedure sendMessageToServer private:
     
+    define input parameter fileCount as integer no-undo.
+
     define variable json as JsonObject no-undo.
     define variable messageText as longchar no-undo.
     define variable messageBytes as memptr no-undo.
@@ -245,6 +247,7 @@ procedure sendMessageToServer private:
     
     json = new JsonObject().
     json:Add('thread', thread#).
+    json:Add('filecount', fileCount).
     
     if (currentCompileErrors:Length = 0) then
         json:Add('status', 'ok').
@@ -252,7 +255,7 @@ procedure sendMessageToServer private:
         json:Add('status', 'error').
         json:Add('errors', currentCompileErrors).
     end.
-        
+
     messageText = createHttpMessage(json).
     messageSizeInBytes = length(messageText, 'raw') + 1.
     set-size(messageBytes) = messageSizeInBytes.
