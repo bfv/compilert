@@ -1,9 +1,9 @@
 import { spawn } from 'child_process';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import { Socket } from 'net';
-import * as makeDir from 'make-dir';
 import path from 'path';
 import fs from 'fs';
+import fse from 'fs-extra';
 
 import { OecConfig } from "./config";
 
@@ -91,7 +91,7 @@ export class Thread {
         const fullDirectory = path.join(this.oecTargetDirectory, 't' + this.threadNr, directory);
         // in theory it is possible that a/b is not in this.directories but a/b/c is, so a/b is already created
         if (!fs.existsSync(fullDirectory)) {
-            makeDir.sync(fullDirectory);
+            fse.mkdirSync(fullDirectory);
         }
     }
 
