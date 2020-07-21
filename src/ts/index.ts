@@ -8,6 +8,7 @@ import { ServerProcess } from './serverprocess';
 
 const argv = yargs.options({
     f: { type: 'string', default: './.oecconfig', alias: 'file', description: 'Configuration path' },
+    c: { type: 'boolean', default: false, alias: 'counter', description: 'display counter' },
     d: { type: 'boolean', default: false, alias: 'delete', description: 'delete rcode before compiling' },
     v: { type: 'boolean', default: false, alias: 'verbose'}
 }).argv;
@@ -24,6 +25,8 @@ async function main() {
     if (argv.v === true) {
         config.verbose = true;
     }
+
+    config.counter = argv.c;
 
     const validationOK = validate();
     if (!validationOK) {

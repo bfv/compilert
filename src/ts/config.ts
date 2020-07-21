@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 export interface OecConfig {
-    dlc: string;
+    dlc: string,
     executable: string,
     threads: number,
     minport: number,
@@ -13,6 +13,7 @@ export interface OecConfig {
     batchSize: number,
     deleteRcode: boolean,
     verbose: boolean,
+    counter: boolean,
     startupParameters: Array<string>
 }
 
