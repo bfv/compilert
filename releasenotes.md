@@ -1,5 +1,9 @@
 # `release notes`
 
+`next`
+- added --targetdir (-t) CLI parameter
+- refactored/consolidated sources into src/lib
+
 `1.1.0`
 - #11 added optional counter (-c) 
 - fixed recursive mkdir bug

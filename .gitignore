@@ -2,12 +2,11 @@ config/
 lib/
 node_modules/
 out/
-src/4gl/.settings/
+src/**/.settings/
 src/4gl-workspace/
 tmp/
 
-src/ts/**/*.js
-src/ts/**/*.p
+src/lib/**/*.js
 
 *.r
 *.lg
@@ -18,7 +17,7 @@ src/4gl/lbi*
 src/4gl/rcd*
 src/4gl/srt*
 
-src/4gl/.project
-src/4gl/.propath
+src/**/.project
+src/**/.propath
 src/config.json
 src/.openedge.json

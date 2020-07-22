@@ -2,12 +2,12 @@
     "name": "compilert",
     "version": "1.1.0",
     "description": "Multi-threaded compiler for OpenEdge",
-    "main": "src/ts/index.js",
+    "main": "index.js",
     "bin": {
         "oec": "./lib/index.js"
     },
     "scripts": {
-        "build": "tsc && cp ./src/4gl/agent.p ./lib",
+        "build": "tsc && cp ./src/lib/agent.p ./lib",
         "lint": "eslint . --ext .ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "preversion": "npm run lint",
