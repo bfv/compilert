@@ -189,14 +189,16 @@ export class ServerProcess implements Response4GL {
             this.errorCount += response.errors.length;
         }
 
-        if (this.compiledFiles > 0) {
+        this.compiledFiles += response.filecount;
+
+        if (this.config.counter && this.compiledFiles > 0) {
             process.stdout.clearLine(0);
             process.stdout.cursorTo(0);       
         }
 
-        this.compiledFiles += response.filecount;
-
-        process.stdout.write(`compiled ${this.compiledFiles}/${this.fileCount}, errors: ${this.errorCount}`);
+        if (this.config.counter) {
+            process.stdout.write(`compiled ${this.compiledFiles}/${this.fileCount}, errors: ${this.errorCount}`);
+        }
         
         if (this.remainingFiles.length > 0) {
             this.compileBatch(response.thread);
