@@ -4,7 +4,7 @@ Multi threaded compiler for OpenEdge with an nodejs engine. Minimum node version
 Tools like PCT can use more than 1 thread for compilation, OpenEdge however saves apart from the class it's compiling also the Base Class(es). When more than one thread tries to save the same base class at same moment, the session stops/crashes. Compilert compiles in several threads (processes actually), each using its own directory. When finished all the .r's are copied to the target directory.
 
 ## configuration
-The working idea is to be able to use more than 1 core for compiling you OE project based on a configuration like this:
+The working idea is to be able to use more than 1 core for compiling your OE project based on a configuration like this:
 ```
 {
     "dlc": "c:/dlc/122",
@@ -36,6 +36,10 @@ Now, compilert uses a orchestrator (node.js) process which communicates to the a
 - `startupParameters` is an array of parameters. Note: `-pf blabla.pf` should go as `"-pf"` and `"blabla.pf"` in this array.  
   
 Compiling can be done with `oec` command. By default the configuration is expected to in `.oecconfig` in the current directory. A different config file can be specified tith the `-f` parameter. At runtime several subdirs (t0, t1, t2, t3 in this example) are created in `${targetdir}/.oec` to store the .r's for the particular thread. When all threads are finished all the subdirs are copied/joined to the `targetdir`. This way collisions when a lot classes inherit the same base class (f.e. BusinessEntity) are avoided.
+
+## CLI arguments
+Compilert is ran by the `oec` command which looks for `.oecconfig` in the current directory. The `-f <file>` parameter can be used to compile a diffent configuration (possibly in a different directory). <br/>
+To see all CLI options use `oec --help`.
 
 ## Runtime behavior
 After issuing an `oec` command `index.ts` is ran. `index.ts` parses the command line args, runs some validations and start a `ServerProcess` instance (`serverprocess.ts`). 
