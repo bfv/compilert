@@ -1,8 +1,10 @@
 # `release notes`
 
-`next`
-- added --targetdir (-t) CLI parameter
-- refactored/consolidated sources into src/lib
+`1.2.0`
+- #14 added --targetdir (-t) CLI parameter
+- #15 refactored/consolidated sources into src/lib
+- #13 return exit code 2 upon compilation errors
+- bugfix for counter always being displayed (#11)
 
 `1.1.0`
 - #11 added optional counter (-c) 
