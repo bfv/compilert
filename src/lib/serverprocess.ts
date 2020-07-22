@@ -193,13 +193,13 @@ export class ServerProcess implements Response4GL {
 
         if (this.config.counter && this.compiledFiles > 0) {
             process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);       
+            process.stdout.cursorTo(0);
         }
 
         if (this.config.counter) {
             process.stdout.write(`compiled ${this.compiledFiles}/${this.fileCount}, errors: ${this.errorCount}`);
         }
-        
+
         if (this.remainingFiles.length > 0) {
             this.compileBatch(response.thread);
         }
@@ -207,11 +207,13 @@ export class ServerProcess implements Response4GL {
             this.threads[response.thread].kill().then(() => {
                 this.activeThreads--;
                 if (this.activeThreads == 0) {
-                    if (this.config.verbose) { 
-                        console.log('all threads closed'); 
+                    if (this.config.verbose) {
+                        console.log('all threads closed');
                     }
                     this.consolidate();
-                    process.exit(0);
+                    process.exit(
+                        this.errorCount == 0 ? 0 : 2
+                    );
                 }
             });
         }
