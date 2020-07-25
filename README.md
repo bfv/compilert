@@ -30,7 +30,7 @@ The working idea is to be able to use more than 1 core for compiling your OE pro
 Now, compilert uses a orchestrator (node.js) process which communicates to the agents (OpenEdge) via TCP ports. The amount of ports is `threads + 1`. These ports are picked between `minport` and `maxport`. 
 - `workdir` is the OE workdir (`.`).
 - `srcroot` is the base directory from which the sources are searched from.
-- `basedir` is the portion of the filename. Handy when `srcroot` points to just a subset of sources.
+- `basedir` is the portion of the filename which will be removed. Handy when `srcroot` points to just a subset of sources.
 - `targetdir` is the directory where all the resulting .r's are copied (in their respective subdirs)
 - `batchsize` the amount of source which are handed over to the agents in one go.
 - `deletercode` if true, the .r's in the `targetdir` are deleted first, default `true`.
