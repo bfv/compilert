@@ -8,10 +8,11 @@ import { ServerProcess } from './serverprocess';
 
 const argv = yargs.options({
     f: { type: 'string', default: './.oecconfig', alias: 'file', description: 'Configuration path' },
-    c: { type: 'boolean', default: false, alias: 'counter', description: 'display counter' },
-    d: { type: 'boolean', default: false, alias: 'delete', description: 'delete rcode before compiling' },
+    c: { type: 'boolean', alias: 'counter', description: 'display counter' },
+    d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
-    v: { type: 'boolean', default: false, alias: 'verbose', description: 'display verbose information' }
+    v: { type: 'boolean', alias: 'verbose', description: 'display verbose information' },
+    x: { type: 'boolean', alias: 'test' }
 }).argv;
 
 export const sleep = (waitTimeInMs: number): Promise<void> => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
@@ -20,8 +21,8 @@ async function main() {
 
     const config = readConfig(argv.f);
 
-    processArgs(config);
-
+    processArgsAndDefaults(config);
+    
     const validationOK = validate();
     if (!validationOK) {
         process.exit(1);
@@ -34,26 +35,13 @@ async function main() {
     server.start();
 }
 
-function processArgs(config: OecConfig): void {
-
-    // --delete
-    if (argv.d === true) {
-        config.deleteRcode = true;  // provide cli override with -d
-    }
-
-    // --verbose
-    if (argv.v === true) {
-        config.verbose = true;
-    }
-
-    // --targetdir
-    if (argv.t) {
-        config.targetdir = argv.t;
-    }
-
-    // --counter
-    config.counter = argv.c;
+function processArgsAndDefaults(config: OecConfig): void {
+    config.targetdir = argv.t ?? config.targetdir;
+    config.counter = argv.c ?? config.counter ?? false;
+    config.deleteRcode = argv.d ?? config.deleteRcode ?? false;
+    config.verbose = argv.v ?? config.verbose ?? false;
 }
+
 
 function validate(): boolean {
 

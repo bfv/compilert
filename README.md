@@ -41,8 +41,10 @@ Compiling can be done with `oec` command. By default the configuration is expect
 Compilert is ran by the `oec` command which looks for `.oecconfig` in the current directory. The `-f <file>` parameter can be used to compile a diffent configuration (possibly in a different directory). <br/>
 To see all CLI options use `oec --help`.
 
+Note: the boolean CLI arguments can be set to false by adding `no-` before the parameter name. So setting the counter option to false would look like `--no-counter`. The may be appropriate when a value is set to `true` in the `.oecconfig` file but one want to override that on the CLI. CLI parameters take precedence over their `.oecconfig` counterparts.
+
 ## exit codes
-0 is obviously no errors. 1 means valudation/configuration errors. 2 represents compilation errors.
+0 is obviously no errors. 1 means validation/configuration errors. 2 represents compilation errors.
 
 ## Runtime behavior
 After issuing an `oec` command `index.ts` is ran. `index.ts` parses the command line args, runs some validations and start a `ServerProcess` instance (`serverprocess.ts`). 

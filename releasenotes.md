@@ -1,5 +1,9 @@
 # `release notes`
 
+`next`
+- #16 make CLI argument negatable
+- refactor: handling defaults
+  
 `1.2.0`
 - #14 added --targetdir (-t) CLI parameter
 - #15 refactored/consolidated sources into src/lib
