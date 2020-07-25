@@ -1,12 +1,13 @@
 # `release notes`
 
-`1.3.0`
+`2.0.0`
 - #16 make CLI argument negatable
 - refactor: handling defaults
 - #19 added --batchsize CLI parameter
 - #23 added --listconfig CLI parameter
 - #20 added validation for dlc, executable, workdir, srcroot & batchsize
 - #24 added --workdir and --srcroot CLI parameters
+- #21 config parameter names in lowercase (MAJOR)
   
 `1.2.0`
 - #14 added --targetdir (-t) CLI parameter

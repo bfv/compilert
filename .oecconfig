@@ -7,8 +7,8 @@
     "workdir": "c:/dev/oe/compilert/src/4gl",
     "srcroot": "c:/dev/oe/compilert/src/4gl",
     "targetdir": "C:/dev/oe/compilert/tmp",
-    "batchSize": 2,
-    "startupParameters": [
+    "batchsize": 2,
+    "startupparameters": [
         "-basekey", "INI",
         "-ininame", "c:/dev/oe/compilert/config/progress.ini",
         "-b"

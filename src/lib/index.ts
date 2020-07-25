@@ -46,9 +46,9 @@ async function main() {
 }
 
 function processArgsAndDefaults(config: OecConfig): void {
-    config.batchSize = argv.b ?? config.batchSize ?? 10;
+    config.batchsize = argv.b ?? config.batchsize ?? 10;
     config.counter = argv.c ?? config.counter ?? false;
-    config.deleteRcode = argv.d ?? config.deleteRcode ?? false;
+    config.deletercode = argv.d ?? config.deletercode ?? false;
     config.listconfig = argv.l ?? config.listconfig ?? false;
     config.srcroot = argv.s ?? config.srcroot;
     config.targetdir = argv.t ?? config.targetdir;
@@ -87,7 +87,7 @@ function validate(config: OecConfig): boolean {
         validationOK = false;
     }
 
-    if (!(config.batchSize > 0)) {
+    if (!(config.batchsize > 0)) {
         console.log('batchsize should be > 0');
         validationOK = false;
     }

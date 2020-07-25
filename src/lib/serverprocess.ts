@@ -55,7 +55,7 @@ export class ServerProcess implements Response4GL {
         }
         fse.mkdirSync(targetDir, { recursive: true });
 
-        if (this.config.deleteRcode) {
+        if (this.config.deletercode) {
             await del(this.config.targetdir + '/**/*.r');
         }
 
@@ -120,7 +120,7 @@ export class ServerProcess implements Response4GL {
 
         const filesToCompiles: string[] = [];
 
-        for (let i = 0; i < this.config.batchSize; i++) {
+        for (let i = 0; i < this.config.batchsize; i++) {
             const file = this.remainingFiles.shift();
             if (file) {
                 filesToCompiles.push(file);

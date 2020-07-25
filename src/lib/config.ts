@@ -10,12 +10,12 @@ export interface OecConfig {
     workdir: string,
     srcroot: string,
     targetdir: string,
-    batchSize: number,
-    deleteRcode: boolean,
+    batchsize: number,
+    deletercode: boolean,
     verbose: boolean,
     counter: boolean,
     listconfig: boolean,
-    startupParameters: Array<string>
+    startupparameters: Array<string>
 }
 
 export function readConfig(configFilename: string): OecConfig {

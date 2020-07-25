@@ -34,7 +34,7 @@ export class Thread {
 
         params.push(paramString);
 
-        for (const param of this.config.startupParameters) {
+        for (const param of this.config.startupparameters) {
             params.push(param);
         }
 

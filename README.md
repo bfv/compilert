@@ -15,10 +15,10 @@ The working idea is to be able to use more than 1 core for compiling your OE pro
     "workdir": "C:/dev/oe/compilert/src/4gl",
     "srcroot": "c:/dev/oe/compilert/src/4gl",
     "targetdir": "c:/dev/oe/compilert/tmp",
-    "batchSize": 4,
-    "deleteRcode": false,
+    "batchsize": 4,
+    "deletercode": false,
     "verbose": false,
-    "startupParameters": [
+    "startupparameters": [
         "-basekey", "INI",
         "-ininame", "c:/dev/oe/compilert/config/progress.ini",
         "-b"
