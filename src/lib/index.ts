@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-import yargs from 'yargs';
+import fs from 'fs';
+import path from 'path';
 import semver from 'semver';
+import yargs from 'yargs';
 
 import { readConfig, OecConfig } from './config';
 import { ServerProcess } from './serverprocess';
@@ -25,7 +27,7 @@ async function main() {
 
     processArgsAndDefaults(config);
 
-    const validationOK = validate();
+    const validationOK = validate(config);
     if (!validationOK) {
         process.exit(1);
     }
@@ -51,13 +53,39 @@ function processArgsAndDefaults(config: OecConfig): void {
 }
 
 
-function validate(): boolean {
+function validate(config: OecConfig): boolean {
 
     let validationOK = true;
 
     const versionOK = semver.satisfies(process.versions.node, '>=12.10.0');
     if (!versionOK) {
         console.log('ERROR: node.js version should be >= 12.10.0');
+        validationOK = false;
+    }
+
+    if (!fs.existsSync(config.dlc)) {
+        console.log(`dlc directory '${config.dlc} doesn't exist'`);
+        validationOK = false;
+    }
+    else {
+        if (!fs.existsSync(path.join(config.dlc, 'bin', config.executable))) {
+            console.log(`executable '${config.executable}' not found in dlc/bin directory '${config.dlc}/bin'`);
+            validationOK = false;
+        }    
+    }
+
+    if (!fs.existsSync(config.workdir)) {
+        console.log(`workdir directory '${config.workdir} doesn't exist'`);
+        validationOK = false;
+    }
+
+    if (!fs.existsSync(config.srcroot)) {
+        console.log(`srcroot directory '${config.srcroot} doesn't exist'`);
+        validationOK = false;
+    }
+
+    if (!(config.batchSize > 0)) {
+        console.log('batchsize should be > 0');
         validationOK = false;
     }
 

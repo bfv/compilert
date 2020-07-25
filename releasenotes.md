@@ -5,6 +5,7 @@
 - refactor: handling defaults
 - #19 added --batchsize CLI parameter
 - #23 added --listconfig CLI parameter
+- added validation for dlc, executable, workdir, srcroot & batchsize
   
 `1.2.0`
 - #14 added --targetdir (-t) CLI parameter
