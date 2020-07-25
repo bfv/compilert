@@ -2,6 +2,7 @@
 
 `2.1.0`
 - #25 added basedir config property
+- #26 added elapsed time to --verbose output
   
 `2.0.0`
 - #16 make CLI argument negatable
