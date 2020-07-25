@@ -14,6 +14,7 @@ export interface OecConfig {
     deleteRcode: boolean,
     verbose: boolean,
     counter: boolean,
+    listconfig: boolean,
     startupParameters: Array<string>
 }
 

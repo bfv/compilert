@@ -11,6 +11,7 @@ const argv = yargs.options({
     c: { type: 'boolean', alias: 'counter', description: 'display counter' },
     d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
     f: { type: 'string', alias: 'file', default: './.oecconfig', description: 'Configuration path' },
+    l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' }, 
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
     v: { type: 'boolean', alias: 'verbose', description: 'display verbose information' },
     x: { type: 'boolean', alias: 'test' }
@@ -23,12 +24,16 @@ async function main() {
     const config = readConfig(argv.f);
 
     processArgsAndDefaults(config);
-    
+
     const validationOK = validate();
     if (!validationOK) {
         process.exit(1);
     }
 
+    if (config.listconfig) {
+        console.log('effective config:\n', JSON.stringify(config, null, 4));
+    }
+    
     const server = new ServerProcess(config);
     await server.init();
 
@@ -40,6 +45,7 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.batchSize = argv.b ?? config.batchSize ?? 10;
     config.counter = argv.c ?? config.counter ?? false;
     config.deleteRcode = argv.d ?? config.deleteRcode ?? false;
+    config.listconfig = argv.l ?? config.listconfig ?? false;
     config.targetdir = argv.t ?? config.targetdir;
     config.verbose = argv.v ?? config.verbose ?? false;
 }
