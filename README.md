@@ -30,10 +30,10 @@ Now, compilert uses a orchestrator (node.js) process which communicates to the a
 - `workdir` is the OE workdir (`.`).
 - `sourceroot` is the base directory from which the sources are searched from.
 - `targetdir` is the directory where all the resulting .r's are copied (in their respective subdirs)
-- `batchSize` the amount of source which are handed over to the agents in one go.
-- `deleteRcode` if true, the .r's in the `targetdir` are deleted first, default `true`.
+- `batchsize` the amount of source which are handed over to the agents in one go.
+- `deletercode` if true, the .r's in the `targetdir` are deleted first, default `true`.
 - `verbose` gives information on threads and more. Default is silent where only errors are reported.
-- `startupParameters` is an array of parameters. Note: `-pf blabla.pf` should go as `"-pf"` and `"blabla.pf"` in this array.  
+- `startupparameters` is an array of parameters. Note: `-pf blabla.pf` should go as `"-pf"` and `"blabla.pf"` in this array.  
   
 Compiling can be done with `oec` command. By default the configuration is expected to in `.oecconfig` in the current directory. A different config file can be specified tith the `-f` parameter. At runtime several subdirs (t0, t1, t2, t3 in this example) are created in `${targetdir}/.oec` to store the .r's for the particular thread. When all threads are finished all the subdirs are copied/joined to the `targetdir`. This way collisions when a lot classes inherit the same base class (f.e. BusinessEntity) are avoided.
 
