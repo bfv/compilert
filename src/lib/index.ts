@@ -14,8 +14,10 @@ const argv = yargs.options({
     d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
     f: { type: 'string', alias: 'file', default: './.oecconfig', description: 'Configuration path' },
     l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' }, 
+    s: { type: 'string', alias: 'srcroot', description: 'compilation start directory' },
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
     v: { type: 'boolean', alias: 'verbose', description: 'display verbose information' },
+    w: { type: 'string', alias: 'workdir', description: 'set session working directory' },
     x: { type: 'boolean', alias: 'test' }
 }).argv;
 
@@ -48,10 +50,11 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.counter = argv.c ?? config.counter ?? false;
     config.deleteRcode = argv.d ?? config.deleteRcode ?? false;
     config.listconfig = argv.l ?? config.listconfig ?? false;
+    config.srcroot = argv.s ?? config.srcroot;
     config.targetdir = argv.t ?? config.targetdir;
     config.verbose = argv.v ?? config.verbose ?? false;
+    config.workdir = argv.w ?? config.workdir;
 }
-
 
 function validate(config: OecConfig): boolean {
 
