@@ -7,9 +7,10 @@ import { readConfig, OecConfig } from './config';
 import { ServerProcess } from './serverprocess';
 
 const argv = yargs.options({
-    f: { type: 'string', default: './.oecconfig', alias: 'file', description: 'Configuration path' },
+    b: { type: 'number', alias: 'batchsize', description: 'compile source per this amount' },
     c: { type: 'boolean', alias: 'counter', description: 'display counter' },
     d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
+    f: { type: 'string', alias: 'file', default: './.oecconfig', description: 'Configuration path' },
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
     v: { type: 'boolean', alias: 'verbose', description: 'display verbose information' },
     x: { type: 'boolean', alias: 'test' }
@@ -36,9 +37,10 @@ async function main() {
 }
 
 function processArgsAndDefaults(config: OecConfig): void {
-    config.targetdir = argv.t ?? config.targetdir;
+    config.batchSize = argv.b ?? config.batchSize ?? 10;
     config.counter = argv.c ?? config.counter ?? false;
     config.deleteRcode = argv.d ?? config.deleteRcode ?? false;
+    config.targetdir = argv.t ?? config.targetdir;
     config.verbose = argv.v ?? config.verbose ?? false;
 }
 

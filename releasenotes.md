@@ -3,6 +3,7 @@
 `next`
 - #16 make CLI argument negatable
 - refactor: handling defaults
+- #19 added --batchsize CLI parameter
   
 `1.2.0`
 - #14 added --targetdir (-t) CLI parameter
