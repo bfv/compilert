@@ -213,7 +213,29 @@ export class ServerProcess implements Response4GL {
                     if (this.config.verbose) {
                         console.log('all threads closed');
                     }
+
                     this.consolidate();
+
+                    if (this.config.verbose) {
+                        let time = new Date().getTime() - this.startTime;
+                        let timestring = '';
+
+                        if (time < 1000) {
+                            timestring = `${time}ms`;
+                        }
+                        else if (time >= 1000 && time < 60 * 1000) {
+                            time /= 1000;
+                            const seconds = time.toFixed(2);
+                            timestring = `${seconds}s`;
+                        }
+                        else {
+                            const minutes = Math.trunc(time / 60);
+                            const seconds = (time % 60).toFixed(1);
+                            timestring = `${minutes}m${seconds}s`;
+                        }
+                        console.log(`elapsed: ${timestring}`);
+                    }
+
                     process.exit(
                         this.errorCount == 0 ? 0 : 2
                     );
