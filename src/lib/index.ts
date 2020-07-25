@@ -54,6 +54,8 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.targetdir = argv.t ?? config.targetdir;
     config.verbose = argv.v ?? config.verbose ?? false;
     config.workdir = argv.w ?? config.workdir;
+
+    config.basedir = config.basedir ?? config.srcroot;
 }
 
 function validate(config: OecConfig): boolean {
@@ -84,6 +86,11 @@ function validate(config: OecConfig): boolean {
 
     if (!fs.existsSync(config.srcroot)) {
         console.log(`srcroot directory '${config.srcroot} doesn't exist'`);
+        validationOK = false;
+    }
+
+    if (!fs.existsSync(config.basedir)) {
+        console.log(`basedir directory '${config.basedir} doesn't exist'`);
         validationOK = false;
     }
 

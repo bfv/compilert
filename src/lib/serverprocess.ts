@@ -37,12 +37,15 @@ export class ServerProcess implements Response4GL {
     private compiledFiles = 0;
     private errorCount = 0;
     private activeThreads = 0;
+    private startTime = 0;
 
     constructor(private config: OecConfig) {
         // this.init();
     }
 
     async init(): Promise<void> {
+
+        this.startTime = new Date().getTime();
 
         // if a Promise is not set up and returned this will not get executed
         const promise = new Promise<void>((resolve) => {
@@ -135,7 +138,7 @@ export class ServerProcess implements Response4GL {
     getFiles(directory: string): string[] {
 
         let files = this.readdirSync(directory, ['.p', '.w', '.cls']);
-        files = this.normalizeFilenames(files, this.config.srcroot);
+        files = this.normalizeFilenames(files, this.config.basedir);
 
         return files;
     }

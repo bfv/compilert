@@ -14,6 +14,7 @@ The working idea is to be able to use more than 1 core for compiling your OE pro
     "maxport": 3075,
     "workdir": "C:/dev/oe/compilert/src/4gl",
     "srcroot": "c:/dev/oe/compilert/src/4gl",
+    "basedir": "..."
     "targetdir": "c:/dev/oe/compilert/tmp",
     "batchsize": 4,
     "deletercode": false,
@@ -28,7 +29,8 @@ The working idea is to be able to use more than 1 core for compiling your OE pro
 
 Now, compilert uses a orchestrator (node.js) process which communicates to the agents (OpenEdge) via TCP ports. The amount of ports is `threads + 1`. These ports are picked between `minport` and `maxport`. 
 - `workdir` is the OE workdir (`.`).
-- `sourceroot` is the base directory from which the sources are searched from.
+- `srcroot` is the base directory from which the sources are searched from.
+- `basedir` is the portion of the filename. Handy when `srcroot` points to just a subset of sources.
 - `targetdir` is the directory where all the resulting .r's are copied (in their respective subdirs)
 - `batchsize` the amount of source which are handed over to the agents in one go.
 - `deletercode` if true, the .r's in the `targetdir` are deleted first, default `true`.
@@ -62,5 +64,5 @@ The server (via `init` method)  creates the targetdir, start a listener and star
 
 When all threads are finished they are sent a quit message upon which the 4GL process shuts down itself (literally a `quit`).
 
-In the `targetdir` an `.oec` directory is created. In the latter every thread has its own directory (t0, ..., tn). Note that n = batchSize - 1 ;-)
-After everything is finished the contents of `.oec/tx` is copied to `targetdir`.
+In the `targetdir` an `.oec` directory is created. In the latter every thread has its own directory (t<sub>0</sub>, ..., t<sub>n</sub>). Note that n = batchsize - 1 ;-)<br>
+After everything is finished the contents of .oec/t<sub>x</sub> is copied to `targetdir`.

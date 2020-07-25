@@ -9,6 +9,7 @@ export interface OecConfig {
     maxport: number,
     workdir: string,
     srcroot: string,
+    basedir: string,
     targetdir: string,
     batchsize: number,
     deletercode: boolean,
