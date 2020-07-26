@@ -16,6 +16,7 @@ const argv = yargs.options({
     l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' }, 
     s: { type: 'string', alias: 'srcroot', description: 'compilation start directory' },
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
+    T: { type: 'number', alias: 'threads', desription: 'override for the number of used threads' },
     v: { type: 'boolean', alias: 'verbose', description: 'display verbose information' },
     w: { type: 'string', alias: 'workdir', description: 'set session working directory' },
     x: { type: 'boolean', alias: 'test' }
@@ -52,6 +53,7 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.listconfig = argv.l ?? config.listconfig ?? false;
     config.srcroot = argv.s ?? config.srcroot;
     config.targetdir = argv.t ?? config.targetdir;
+    config.threads = argv.T ?? config.threads ?? 4;  // 4 is a reasonable default
     config.verbose = argv.v ?? config.verbose ?? false;
     config.workdir = argv.w ?? config.workdir;
 

@@ -1,5 +1,11 @@
 # `release notes`
 
+`2.2.0`
+- #27 added --threads CLI parameter
+
+`2.1.1` & `2.1.2`
+- updates on README.md & releasenotes.md 
+  
 `2.1.0`
 - #25 added basedir config property
 - #26 added elapsed time to --verbose output
