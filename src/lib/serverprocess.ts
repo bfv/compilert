@@ -229,8 +229,8 @@ export class ServerProcess implements Response4GL {
                             timestring = `${seconds}s`;
                         }
                         else {
-                            const minutes = Math.trunc(time / 60);
-                            const seconds = (time % 60).toFixed(1);
+                            const minutes = Math.trunc(time / 60000);
+                            const seconds = ((time % 60000) / 1000).toFixed(1);
                             timestring = `${minutes}m${seconds}s`;
                         }
                         console.log(`elapsed: ${timestring}`);

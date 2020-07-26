@@ -2,7 +2,8 @@
 
 `2.2.0`
 - #27 added --threads CLI parameter
-
+- #28 fixed elapsed time display bug
+  
 `2.1.1` & `2.1.2`
 - updates on README.md & releasenotes.md 
   
