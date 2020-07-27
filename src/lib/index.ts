@@ -27,6 +27,7 @@ export const sleep = (waitTimeInMs: number): Promise<void> => new Promise(resolv
 async function main() {
 
     const config = readConfig(argv.f);
+    config.oecconfigdir = path.dirname(fs.realpathSync(argv.f));
 
     processArgsAndDefaults(config);
 
@@ -58,6 +59,22 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.workdir = argv.w ?? config.workdir;
 
     config.basedir = config.basedir ?? config.srcroot;
+
+    if (config.basedir.startsWith('./')) {
+        config.basedir = path.join(config.oecconfigdir, config.basedir);
+    }
+
+    if (config.srcroot.startsWith('./')) {
+        config.srcroot = path.join(config.oecconfigdir, config.srcroot);
+    }
+
+    if (config.targetdir.startsWith('./')) {
+        config.targetdir = path.join(config.oecconfigdir, config.targetdir);
+    }
+
+    if (config.workdir.startsWith('./')) {
+        config.workdir = path.join(config.oecconfigdir, config.workdir);
+    } 
 }
 
 function validate(config: OecConfig): boolean {

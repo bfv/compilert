@@ -3,6 +3,8 @@ Multi threaded compiler for OpenEdge with an nodejs engine. Minimum node version
 
 Tools like PCT can use more than 1 thread for compilation, OpenEdge however saves apart from the class it's compiling also the Base Class(es). When more than one thread tries to save the same base class at same moment, the session stops/crashes. Compilert compiles in several threads (processes actually), each using its own directory. When finished all the .r's are copied to the target directory.
 
+So far this has been tested on Windows only. Linux experiences are welcome.
+
 ## configuration
 The working idea is to be able to use more than 1 core for compiling your OE project based on a configuration like this:
 ```
@@ -38,6 +40,10 @@ Now, compilert uses a orchestrator (node.js) process which communicates to the a
 - `startupparameters` is an array of parameters. Note: `-pf blabla.pf` should go as `"-pf"` and `"blabla.pf"` in this array.  
   
 Compiling can be done with `oec` command. By default the configuration is expected to in `.oecconfig` in the current directory. A different config file can be specified tith the `-f` parameter. At runtime several subdirs (t0, t1, t2, t3 in this example) are created in `${targetdir}/.oec` to store the .r's for the particular thread. When all threads are finished all the subdirs are copied/joined to the `targetdir`. This way collisions when a lot classes inherit the same base class (f.e. BusinessEntity) are avoided.
+
+Note for `basedir`, `srcroot`, `targetdir` and `workdir`:
+If the values for these directories start with `./` then the directory in which the `.oecconfig` file located is substituted for `./`.
+So if the `.oecconfig` is located in `c:\projects\sports2000` and the `workdir` is `./src` the effective `workdir` will be `c:/projects/sports200/src` 
 
 ## CLI arguments
 Compilert is ran by the `oec` command which looks for `.oecconfig` in the current directory. The `-f <file>` parameter can be used to compile a diffent configuration (possibly in a different directory). <br/>

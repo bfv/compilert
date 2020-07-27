@@ -2,6 +2,7 @@
 
 `2.3.0` 
 - refactored displaying time
+- #30 relative paths possible for basedir/srcroot/targetdir/workdir
   
 `2.2.0`
 - #27 added --threads CLI parameter
