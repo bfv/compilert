@@ -16,6 +16,7 @@ export interface OecConfig {
     verbose: boolean,
     counter: boolean,
     listconfig: boolean,
+    oecconfigdir: string,
     startupparameters: Array<string>
 }
 

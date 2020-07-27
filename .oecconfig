@@ -4,13 +4,14 @@
     "threads": 2,
     "minport": 3055,
     "maxport": 3075,
-    "workdir": "c:/dev/oe/compilert/src/4gl",
-    "srcroot": "c:/dev/oe/compilert/src/4gl",
-    "targetdir": "C:/dev/oe/compilert/tmp",
+    "workdir": "./src/4gl",
+    "srcroot": "./src/4gl",
+    "targetdir": "./tmp",
     "batchsize": 2,
     "startupparameters": [
         "-basekey", "INI",
-        "-ininame", "c:/dev/oe/compilert/config/progress.ini",
+        "-ininame", "./../../config/progress.ini",
+        "-pf", "./../../config/test.pf",
         "-b"
     ]
 }

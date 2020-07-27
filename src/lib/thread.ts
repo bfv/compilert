@@ -116,7 +116,6 @@ export class Thread {
             this.sendMessage('plain/text', 'quit').then(() => {
                 resolve();
             });
-
         });
 
         return promise;

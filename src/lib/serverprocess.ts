@@ -40,12 +40,10 @@ export class ServerProcess implements Response4GL {
     private startTime = 0;
 
     constructor(private config: OecConfig) {
-        // this.init();
+        this.startTime = new Date().getTime();
     }
 
     async init(): Promise<void> {
-
-        this.startTime = new Date().getTime();
 
         // if a Promise is not set up and returned this will not get executed
         const promise = new Promise<void>((resolve) => {
@@ -217,23 +215,7 @@ export class ServerProcess implements Response4GL {
                     this.consolidate();
 
                     if (this.config.verbose) {
-                        let time = new Date().getTime() - this.startTime;
-                        let timestring = '';
-
-                        if (time < 1000) {
-                            timestring = `${time}ms`;
-                        }
-                        else if (time >= 1000 && time < 60 * 1000) {
-                            time /= 1000;
-                            const seconds = time.toFixed(2);
-                            timestring = `${seconds}s`;
-                        }
-                        else {
-                            const minutes = Math.trunc(time / 60000);
-                            const seconds = ((time % 60000) / 1000).toFixed(1);
-                            timestring = `${minutes}m${seconds}s`;
-                        }
-                        console.log(`elapsed: ${timestring}`);
+                        console.log(`elapsed: ${this.makeTimeString()}`);
                     }
 
                     process.exit(
@@ -242,6 +224,27 @@ export class ServerProcess implements Response4GL {
                 }
             });
         }
+    }
+
+    makeTimeString(): string {
+
+        let time = new Date().getTime() - this.startTime;
+        let timestring = '';
+
+        if (time < 1000) {
+            timestring = `${time}ms`;
+        }
+        else if (time >= 1000 && time < 60 * 1000) {
+            time /= 1000;
+            const seconds = time.toFixed(2);
+            timestring = `${seconds}s`;
+        }
+        else {
+            const minutes = Math.trunc(time / 60000);
+            const seconds = ((time % 60000) / 1000).toFixed(1);
+            timestring = `${minutes}m${seconds}s`;
+        }
+        return timestring;
     }
 
     private consolidate() {
