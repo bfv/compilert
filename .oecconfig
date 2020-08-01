@@ -5,7 +5,11 @@
     "minport": 3055,
     "maxport": 3075,
     "workdir": "./src/4gl",
-    "srcroot": "./src/4gl",
+    "srcroot": "./src/4gl/test", 
+    "basedir": "./src/4gl",
+    "sourcesets": [
+        { "srcroot": "./src/4gl/test1", "basedir": "./src/4gl" }
+    ],
     "targetdir": "./tmp",
     "batchsize": 2,
     "startupparameters": [
