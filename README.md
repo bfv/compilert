@@ -16,7 +16,8 @@ The working idea is to be able to use more than 1 core for compiling your OE pro
     "maxport": 3075,
     "workdir": "C:/dev/oe/compilert/src/4gl",
     "srcroot": "c:/dev/oe/compilert/src/4gl",
-    "basedir": "..."
+    "basedir": "...",
+    "sourcesets": [ { "srcroot": "c:/dev/oe/compilert/src/4gl", "basedir": "..." } ],
     "targetdir": "c:/dev/oe/compilert/tmp",
     "batchsize": 4,
     "deletercode": false,
@@ -33,6 +34,7 @@ Now, compilert uses a orchestrator (node.js) process which communicates to the a
 - `workdir` is the OE workdir (`.`).
 - `srcroot` is the base directory from which the sources are searched from.
 - `basedir` is the portion of the filename which will be removed. Handy when `srcroot` points to just a subset of sources.
+- `sourcesets` is an array of objects with `srcroot` and `basedir` properties to handle multiple directories
 - `targetdir` is the directory where all the resulting .r's are copied (in their respective subdirs)
 - `batchsize` the amount of source which are handed over to the agents in one go.
 - `deletercode` if true, the .r's in the `targetdir` are deleted first, default `true`.

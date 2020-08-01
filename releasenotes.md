@@ -1,5 +1,8 @@
 # `release notes`
 
+`2.4.0`
+- #8 implemented source sets
+
 `2.3.0` 
 - refactored displaying time
 - #30 relative paths possible for basedir/srcroot/targetdir/workdir

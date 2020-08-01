@@ -13,7 +13,7 @@ const argv = yargs.options({
     c: { type: 'boolean', alias: 'counter', description: 'display counter' },
     d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
     f: { type: 'string', alias: 'file', default: './.oecconfig', description: 'Configuration path' },
-    l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' }, 
+    l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' },
     s: { type: 'string', alias: 'srcroot', description: 'compilation start directory' },
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
     T: { type: 'number', alias: 'threads', desription: 'override for the number of used threads' },
@@ -39,7 +39,7 @@ async function main() {
     if (config.listconfig) {
         console.log('effective config:\n', JSON.stringify(config, null, 4));
     }
-    
+
     const server = new ServerProcess(config);
     await server.init();
 
@@ -52,20 +52,27 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.counter = argv.c ?? config.counter ?? false;
     config.deletercode = argv.d ?? config.deletercode ?? false;
     config.listconfig = argv.l ?? config.listconfig ?? false;
-    config.srcroot = argv.s ?? config.srcroot;
     config.targetdir = argv.t ?? config.targetdir;
     config.threads = argv.T ?? config.threads ?? 4;  // 4 is a reasonable default
     config.verbose = argv.v ?? config.verbose ?? false;
     config.workdir = argv.w ?? config.workdir;
 
-    config.basedir = config.basedir ?? config.srcroot;
-
-    if (config.basedir.startsWith('./')) {
-        config.basedir = path.join(config.oecconfigdir, config.basedir);
+    if (config.srcroot) {
+        const sourceset = { srcroot: config.srcroot, basedir: config.basedir ?? '' };
+        config.sourcesets.push(sourceset);
     }
+    
+    for (const soureceset of config.sourcesets) {
 
-    if (config.srcroot.startsWith('./')) {
-        config.srcroot = path.join(config.oecconfigdir, config.srcroot);
+        soureceset.basedir = soureceset.basedir ?? soureceset.srcroot;
+        
+        if (soureceset.basedir.startsWith('./')) {
+            soureceset.basedir = path.join(config.oecconfigdir, soureceset.basedir);
+        }
+
+        if (soureceset.srcroot.startsWith('./')) {
+            soureceset.srcroot = path.join(config.oecconfigdir, soureceset.srcroot);
+        }
     }
 
     if (config.targetdir.startsWith('./')) {
@@ -74,7 +81,7 @@ function processArgsAndDefaults(config: OecConfig): void {
 
     if (config.workdir.startsWith('./')) {
         config.workdir = path.join(config.oecconfigdir, config.workdir);
-    } 
+    }
 }
 
 function validate(config: OecConfig): boolean {
@@ -95,7 +102,7 @@ function validate(config: OecConfig): boolean {
         if (!fs.existsSync(path.join(config.dlc, 'bin', config.executable))) {
             console.log(`executable '${config.executable}' not found in dlc/bin directory '${config.dlc}/bin'`);
             validationOK = false;
-        }    
+        }
     }
 
     if (!fs.existsSync(config.workdir)) {
@@ -103,14 +110,16 @@ function validate(config: OecConfig): boolean {
         validationOK = false;
     }
 
-    if (!fs.existsSync(config.srcroot)) {
-        console.log(`srcroot directory '${config.srcroot} doesn't exist'`);
-        validationOK = false;
-    }
+    for (const soureceset of config.sourcesets) {
+        if (!fs.existsSync(soureceset.srcroot)) {
+            console.log(`srcroot directory '${soureceset.srcroot} doesn't exist'`);
+            validationOK = false;
+        }
 
-    if (!fs.existsSync(config.basedir)) {
-        console.log(`basedir directory '${config.basedir} doesn't exist'`);
-        validationOK = false;
+        if (!fs.existsSync(soureceset.basedir)) {
+            console.log(`basedir directory '${soureceset.basedir} doesn't exist'`);
+            validationOK = false;
+        }
     }
 
     if (!(config.batchsize > 0)) {
@@ -119,6 +128,6 @@ function validate(config: OecConfig): boolean {
     }
 
     return validationOK;
-} 
+}
 
 main();

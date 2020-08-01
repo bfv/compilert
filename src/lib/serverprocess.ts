@@ -109,7 +109,12 @@ export class ServerProcess implements Response4GL {
 
     start(): void {
 
-        this.remainingFiles = this.getFiles(this.config.srcroot);
+        this.remainingFiles = [];
+        for (const sourceset of this.config.sourcesets) {
+            const files = this.getFiles(sourceset.srcroot, sourceset.basedir);
+            this.remainingFiles = [...this.remainingFiles, ...files ];
+        }
+        
         this.fileCount = this.remainingFiles.length;
 
         for (let i = 0; i < this.config.threads; i++) {
@@ -133,10 +138,10 @@ export class ServerProcess implements Response4GL {
         return (this.remainingFiles.length > 0);
     }
 
-    getFiles(directory: string): string[] {
+    getFiles(directory: string, basedir: string): string[] {
 
         let files = this.readdirSync(directory, ['.p', '.w', '.cls']);
-        files = this.normalizeFilenames(files, this.config.basedir);
+        files = this.normalizeFilenames(files, basedir);
 
         return files;
     }

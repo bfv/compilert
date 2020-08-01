@@ -11,6 +11,7 @@ export interface OecConfig {
     srcroot: string,
     basedir: string,
     targetdir: string,
+    sourcesets: [ { srcroot: string, basedir: string, excludes?: string[] } ],
     batchsize: number,
     deletercode: boolean,
     verbose: boolean,
