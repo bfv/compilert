@@ -13,6 +13,7 @@
         "brace-style": [2, "stroustrup", { "allowSingleLine": false }],
         "eol-last": ["error", "always"],
         "indent": ["error", 4],
-        "no-console": 0
+        "no-console": 0,
+        "semi": "error"
     }
 }
