@@ -4,6 +4,7 @@
 - #8 implemented source sets
 - #33 added --create option to create .oecconfig
 - display directory info when --delete and --verbose
+- #34 fixed error when --delete is used and targetdir is not under .oecconfig dir
 
 `2.3.0` 
 - refactored displaying time

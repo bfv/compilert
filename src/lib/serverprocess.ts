@@ -60,7 +60,7 @@ export class ServerProcess implements Response4GL {
             if (this.config.verbose) {
                 console.log(`delete rcode in ${this.config.targetdir}`)
             }
-            await del(this.config.targetdir + '/**/*.r');
+            await del(this.config.targetdir + '/**/*.r', { force: true });
         }
 
         this.serverPort = await this.getFreePort(this.config.minport, this.config.maxport);
