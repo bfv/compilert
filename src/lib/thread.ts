@@ -99,7 +99,7 @@ export class Thread {
 
         const promise = new Promise<void>((resolve) => {
 
-            const client = new Socket()
+            const client = new Socket();
             client.connect(this.port, 'localhost', () => {
                 client.write(contentType + '\r\n' + message);
                 client.destroy();
