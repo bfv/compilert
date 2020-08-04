@@ -2,6 +2,8 @@
 
 `2.4.0`
 - #8 implemented source sets
+- #33 added --create option to create .oecconfig
+- display directory info when --delete and --verbose
 
 `2.3.0` 
 - refactored displaying time

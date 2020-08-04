@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
 import yargs from 'yargs';
+import readline from 'readline-sync';
 
 import { readConfig, OecConfig } from './config';
 import { ServerProcess } from './serverprocess';
@@ -11,6 +12,7 @@ import { ServerProcess } from './serverprocess';
 const argv = yargs.options({
     b: { type: 'number', alias: 'batchsize', description: 'compile source per this amount' },
     c: { type: 'boolean', alias: 'counter', description: 'display counter' },
+    create: { type: 'boolean', description: 'create .oecconfig file in current dir' },
     d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
     f: { type: 'string', alias: 'file', default: './.oecconfig', description: 'Configuration path' },
     l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' },
@@ -18,13 +20,17 @@ const argv = yargs.options({
     t: { type: 'string', alias: 'targetdir', description: 'override for targetdir in .oecconfig' },
     T: { type: 'number', alias: 'threads', desription: 'override for the number of used threads' },
     v: { type: 'boolean', alias: 'verbose', description: 'display verbose information' },
-    w: { type: 'string', alias: 'workdir', description: 'set session working directory' },
-    x: { type: 'boolean', alias: 'test' }
+    w: { type: 'string', alias: 'workdir', description: 'set session working directory' }
 }).argv;
 
 export const sleep = (waitTimeInMs: number): Promise<void> => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 async function main() {
+
+    if (argv.create) {
+        createDefaultConfig();
+        process.exit(0);
+    }
 
     const config = readConfig(argv.f);
     config.oecconfigdir = path.dirname(fs.realpathSync(argv.f));
@@ -48,6 +54,7 @@ async function main() {
 }
 
 function processArgsAndDefaults(config: OecConfig): void {
+
     config.batchsize = argv.b ?? config.batchsize ?? 10;
     config.counter = argv.c ?? config.counter ?? false;
     config.deletercode = argv.d ?? config.deletercode ?? false;
@@ -128,6 +135,24 @@ function validate(config: OecConfig): boolean {
     }
 
     return validationOK;
+}
+
+function createDefaultConfig(): void {
+
+    const oecFilename = path.join(fs.realpathSync('.'), '.oecconfig');
+
+    if (fs.existsSync(oecFilename)) {
+        const reply = readline.question('.oecconfig already exists, overwrite? (y/N)');
+        if (reply.toLowerCase() == 'y') {
+            fs.unlinkSync(oecFilename);
+        }
+        else {
+            console.log('aborted');
+            process.exit(1);
+        }
+    }
+
+    fs.copyFileSync(path.join(__dirname, '.oecconfig.template.json'), oecFilename);
 }
 
 main();

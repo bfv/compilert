@@ -57,6 +57,9 @@ export class ServerProcess implements Response4GL {
         fse.mkdirSync(targetDir, { recursive: true });
 
         if (this.config.deletercode) {
+            if (this.config.verbose) {
+                console.log(`delete rcode in ${this.config.targetdir}`)
+            }
             await del(this.config.targetdir + '/**/*.r');
         }
 
