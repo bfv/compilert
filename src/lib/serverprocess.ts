@@ -3,6 +3,7 @@ import getPort from 'get-port';
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
+import ignore from 'ignore';
 
 import { OecConfig } from './config';
 import { Thread } from './thread';
@@ -114,7 +115,12 @@ export class ServerProcess implements Response4GL {
 
         this.remainingFiles = [];
         for (const sourceset of this.config.sourcesets) {
-            const files = this.getFiles(sourceset.srcroot, sourceset.basedir);
+            let files = this.getFiles(sourceset.srcroot, sourceset.basedir);
+            if (sourceset.excludes) {
+                const ignorer = ignore().add(sourceset.excludes);
+                files = ignorer.filter(files); 
+            }
+            
             this.remainingFiles = [...this.remainingFiles, ...files ];
         }
         

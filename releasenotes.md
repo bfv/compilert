@@ -1,5 +1,8 @@
 # `release notes`
 
+`2.5.0` 
+- #36 implemented gitignore style `excludes` for `sourcesets` 
+  
 `2.4.0`
 - #8 implemented source sets
 - #33 added --create option to create .oecconfig

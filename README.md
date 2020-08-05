@@ -17,7 +17,14 @@ The working idea is to be able to use more than 1 core for compiling your OE pro
     "workdir": "C:/dev/oe/compilert/src/4gl",
     "srcroot": "c:/dev/oe/compilert/src/4gl",
     "basedir": "...",
-    "sourcesets": [ { "srcroot": "c:/dev/oe/compilert/src/4gl", "basedir": "..." } ],
+    "sourcesets": [ { 
+        "srcroot": "c:/dev/oe/compilert/src/4gl", 
+        "basedir": "...", 
+        "excludes": [ 
+            "test1/*", 
+            "!test1/**/" 
+        ] 
+    } ],
     "targetdir": "c:/dev/oe/compilert/tmp",
     "batchsize": 4,
     "deletercode": false,
@@ -46,6 +53,10 @@ Compiling can be done with `oec` command. By default the configuration is expect
 Note for `basedir`, `srcroot`, `targetdir` and `workdir`:
 If the values for these directories start with `./` then the directory in which the `.oecconfig` file located is substituted for `./`.
 So if the `.oecconfig` is located in `c:\projects\sports2000` and the `workdir` is `./src` the effective `workdir` will be `c:/projects/sports200/src` 
+
+### sourcesets
+When you want to compile more than one direcotry in a certain root but not all of them `sourcesets` is what you're looking for.
+Multiple sourcesets can be specified, each sourceset can have its own .gitignore style excludes.
 
 ## CLI arguments
 Compilert is ran by the `oec` command which looks for `.oecconfig` in the current directory. The `-f <file>` parameter can be used to compile a diffent configuration (possibly in a different directory). <br/>
