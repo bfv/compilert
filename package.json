@@ -41,6 +41,7 @@
         "express": "^4.17.1",
         "fs-extra": "^9.0.1",
         "get-port": "^5.1.1",
+        "ignore": "^5.1.8",
         "readline-sync": "^1.4.10",
         "semver": "^7.3.2",
         "typescript": "^3.9.5",
