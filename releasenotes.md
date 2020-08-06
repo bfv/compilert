@@ -1,5 +1,8 @@
 # `release notes`
 
+`2.6.0`
+- #40 added --dlc & --executable cli option
+  
 `2.5.1`
 - fixed .oecconfig.template.json not in npm package 
 

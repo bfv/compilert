@@ -14,6 +14,8 @@ const argv = yargs.options({
     c: { type: 'boolean', alias: 'counter', description: 'display counter' },
     create: { type: 'boolean', description: 'create .oecconfig file in current dir' },
     d: { type: 'boolean', alias: 'delete', description: 'delete rcode before compiling' },
+    dlc: { type: 'string', description: 'set the dlc location' },
+    executable: { type: 'string', description: 'set the executable for compilation' },
     f: { type: 'string', alias: 'file', default: './.oecconfig', description: 'Configuration path' },
     l: { type: 'boolean', alias: 'listconfig', description: 'list effective configuration' },
     s: { type: 'string', alias: 'srcroot', description: 'compilation start directory' },
@@ -58,6 +60,8 @@ function processArgsAndDefaults(config: OecConfig): void {
     config.batchsize = argv.b ?? config.batchsize ?? 10;
     config.counter = argv.c ?? config.counter ?? false;
     config.deletercode = argv.d ?? config.deletercode ?? false;
+    config.dlc = argv.dlc ?? config.dlc;
+    config.executable = argv.executable ?? config.executable;
     config.listconfig = argv.l ?? config.listconfig ?? false;
     config.targetdir = argv.t ?? config.targetdir;
     config.threads = argv.T ?? config.threads ?? 4;  // 4 is a reasonable default
