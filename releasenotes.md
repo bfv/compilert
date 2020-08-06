@@ -1,5 +1,8 @@
 # `release notes`
 
+`2.5.1`
+- fixed .oecconfig.template.json not in npm package 
+
 `2.5.0` 
 - #36 implemented gitignore style `excludes` for `sourcesets` 
   
