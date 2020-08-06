@@ -7,7 +7,7 @@
         "oec": "./lib/index.js"
     },
     "scripts": {
-        "build": "tsc && cp ./src/lib/agent.p ./lib",
+        "build": "tsc && cp ./src/lib/agent.p ./lib && cp ./src/lib/.oecconfig.template.json ./lib",
         "lint": "eslint . --ext .ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "preversion": "npm run lint",

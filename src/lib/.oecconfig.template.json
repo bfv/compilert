@@ -1,0 +1,19 @@
+{
+    "dlc": "<DLC-install-dir>",
+    "executable": "prowin.exe",
+    "threads": 4,
+    "minport": 3055,
+    "maxport": 3075,
+    "workdir": "./src",
+    "sourcesets": [
+        { "srcroot": "./src", "basedir": "./src", "excludes": [] }
+    ],
+    "targetdir": "./tmp",
+    "batchsize": 25,
+    "startupparameters": [
+        "-basekey", "INI",
+        "-ininame", "./config/progress.ini",
+        "-pf", "./config/test.pf",
+        "-b"
+    ]
+}
