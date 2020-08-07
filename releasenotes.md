@@ -1,5 +1,9 @@
 # `release notes`
 
+`2.7.0` 
+- `.` in `srcroot` and `basedir`are nog relative to `workidir` 
+- fixed workdir/basedir/.. bug where `.` was not resolved
+
 `2.6.0`
 - #40 added --dlc & --executable cli option
   
