@@ -1,5 +1,9 @@
 # `release notes`
 
+`2.7.2`
+- fixed bug resolving `.`
+- introduced `agent.error.log`
+  
 `2.7.1`
 - undo `2.7.0` 
 
