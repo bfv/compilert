@@ -72,28 +72,17 @@ function processArgsAndDefaults(config: OecConfig): void {
         const sourceset = { srcroot: config.srcroot, basedir: config.basedir ?? '' };
         config.sourcesets.push(sourceset);
     }
-
-    if (config.workdir == '.' || config.workdir == './') {
-        config.workdir = config.oecconfigdir;
-    }
-
+    
     for (const soureceset of config.sourcesets) {
 
         soureceset.basedir = soureceset.basedir ?? soureceset.srcroot;
-        if (soureceset.basedir == '.' || soureceset.basedir == './') {
-            soureceset.basedir = config.workdir;
-        }
-
+        
         if (soureceset.basedir.startsWith('./')) {
-            soureceset.basedir = path.join(config.workdir, soureceset.basedir);
-        }
-
-        if (soureceset.srcroot == '.' || soureceset.srcroot == './') {
-            soureceset.srcroot = config.workdir;
+            soureceset.basedir = path.join(config.oecconfigdir, soureceset.basedir);
         }
 
         if (soureceset.srcroot.startsWith('./')) {
-            soureceset.srcroot = path.join(config.workdir, soureceset.srcroot);
+            soureceset.srcroot = path.join(config.oecconfigdir, soureceset.srcroot);
         }
     }
 

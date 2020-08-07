@@ -50,14 +50,13 @@ Now, compilert uses a orchestrator (node.js) process which communicates to the a
   
 Compiling can be done with `oec` command. By default the configuration is expected to in `.oecconfig` in the current directory. A different config file can be specified tith the `-f` parameter. At runtime several subdirs (t0, t1, t2, t3 in this example) are created in `${targetdir}/.oec` to store the .r's for the particular thread. When all threads are finished all the subdirs are copied/joined to the `targetdir`. This way collisions when a lot classes inherit the same base class (f.e. BusinessEntity) are avoided.
 
-Note for `targetdir` and `workdir`:
-If the values for these directories start with `.` then the directory in which the `.oecconfig` file located is used as value for `.`.
+Note for `basedir`, `srcroot`, `targetdir` and `workdir`:
+If the values for these directories start with `./` then the directory in which the `.oecconfig` file located is substituted for `./`.
 So if the `.oecconfig` is located in `c:\projects\sports2000` and the `workdir` is `./src` the effective `workdir` will be `c:/projects/sports200/src` 
 
 ### sourcesets
-When you want to compile more than one directory in a certain root but not all of them `sourcesets` is what you're looking for.
-Multiple sourcesets can be specified, each sourceset can have its own .gitignore style excludes. If you use `.` as part of the (beginning of the) value of `basedir` or `srcroot`, it is treated as you would expect in 4GL, it is relative to `workdir`. 
-Use the `excludes` string array to specify if there's something you don't want. These ignores are in the `.getignore` format.
+When you want to compile more than one direcotry in a certain root but not all of them `sourcesets` is what you're looking for.
+Multiple sourcesets can be specified, each sourceset can have its own .gitignore style excludes.
 
 ## CLI arguments
 Compilert is ran by the `oec` command which looks for `.oecconfig` in the current directory. The `-f <file>` parameter can be used to compile a diffent configuration (possibly in a different directory). <br/>
