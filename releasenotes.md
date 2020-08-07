@@ -1,5 +1,11 @@
 # `release notes`
 
+`2.7.1`
+- undo `2.7.0` 
+
+`2.7.0`
+DISCARDED RELASE
+
 `2.6.0`
 - #40 added --dlc & --executable cli option
   
