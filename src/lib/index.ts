@@ -77,17 +77,31 @@ function processArgsAndDefaults(config: OecConfig): void {
 
         soureceset.basedir = soureceset.basedir ?? soureceset.srcroot;
         
+        if (soureceset.basedir == '.') {
+            soureceset.basedir = config.oecconfigdir;
+        }            
         if (soureceset.basedir.startsWith('./')) {
             soureceset.basedir = path.join(config.oecconfigdir, soureceset.basedir);
         }
 
+        if (soureceset.srcroot == '.') {
+            soureceset.srcroot = config.oecconfigdir;
+        }            
         if (soureceset.srcroot.startsWith('./')) {
             soureceset.srcroot = path.join(config.oecconfigdir, soureceset.srcroot);
         }
     }
 
+    if (config.targetdir == '.') {
+        config.targetdir = config.oecconfigdir;
+    }
+
     if (config.targetdir.startsWith('./')) {
         config.targetdir = path.join(config.oecconfigdir, config.targetdir);
+    }
+
+    if (config.workdir == '.') {
+        config.workdir = config.oecconfigdir;
     }
 
     if (config.workdir.startsWith('./')) {

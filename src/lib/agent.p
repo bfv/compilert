@@ -33,6 +33,12 @@ do on error undo, throw:
     wait-for 'close' of this-procedure.
     
     run destroyListener.
+
+    catch err1 as Progress.Lang.Error:
+        output to 'agent.error.log' append.
+        put unformatted err1:GetMessage(1) skip.
+        output close.
+    end.   
     
 end.
 
@@ -143,7 +149,7 @@ procedure initialize private:
    
     file-info:file-name = basedir.
     if (file-info:file-type = ?) then 
-        undo, throw new AppError(substitute("basedir '&1 does not exist'", basedir)).
+        undo, throw new AppError(substitute("basedir '&1' does not exist", basedir), -1).
     
     compileDestination = basedir + '/t' + string(thread#).    
     file-info:file-name = compileDestination.
