@@ -228,7 +228,7 @@ export class ServerProcess implements Response4GL {
 
                     this.consolidate();
 
-                    if (this.config.verbose) {
+                    if (this.config.verbose || this.config.counter) {
                         console.log(`elapsed: ${this.makeTimeString()}`);
                     }
 

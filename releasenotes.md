@@ -1,5 +1,8 @@
 # `release notes`
 
+`2.7.3`
+- #26 display timing for --counter option
+  
 `2.7.2`
 - fixed bug resolving `.`
 - introduced `agent.error.log`
