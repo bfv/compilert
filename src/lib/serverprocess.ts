@@ -199,6 +199,9 @@ export class ServerProcess implements Response4GL {
 
         if (response.errors) {
             for (let i = 0; i < response.errors.length; i++) {
+                if (this.config.counter) {
+                    console.log('');
+                }
                 console.error('ERROR:', response.errors[i].file, ':', response.errors[i].error);
             }
             this.errorCount += response.errors.length;
@@ -222,6 +225,11 @@ export class ServerProcess implements Response4GL {
             this.threads[response.thread].kill().then(() => {
                 this.activeThreads--;
                 if (this.activeThreads == 0) {
+
+                    if (this.config.counter) {
+                        console.log('');
+                    }
+
                     if (this.config.verbose) {
                         console.log('all threads closed');
                     }

@@ -1,5 +1,8 @@
 # `release notes`
 
+`2.7.4`
+- cleaned up --counter and --verbose output
+
 `2.7.3`
 - #26 display timing for --counter option
   
