@@ -83,5 +83,5 @@ The server (via `init` method)  creates the targetdir, start a listener and star
 
 When all threads are finished they are sent a quit message upon which the 4GL process shuts down itself (literally a `quit`).
 
-In the `targetdir` an `.oec` directory is created. In the latter every thread has its own directory (t<sub>0</sub>, ..., t<sub>n</sub>). Note that n = batchsize - 1 ;-)<br>
-After everything is finished the contents of .oec/t<sub>x</sub> is copied to `targetdir`.
+In the `targetdir` an `.oec` directory is created. In `.oec` every thread has its own directory (t<sub>0</sub>, ..., t<sub>n-1</sub>), where n = #threads<br>
+After everything is finished the contents of .oec/t<sub>i</sub> is copied to `targetdir`.
